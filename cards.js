@@ -53,6 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.setProperty('--background-y', `${bgY}%`);
             card.style.setProperty('--viewing-angle', `${viewingAngle}deg`);
             card.style.setProperty('--tilt-intensity', tiltIntensity.toFixed(3));
+
+            // DEBUG: Add a visible indicator
+            card.style.border = '2px solid red';
         });
         
         card.addEventListener('mouseleave', () => {
@@ -67,6 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.setProperty('--background-y', '50%');
             card.style.setProperty('--viewing-angle', '0deg');
             card.style.setProperty('--tilt-intensity', '0');
+
+            // Remove debug border
+            card.style.border = 'none';
         });
     });
 });
