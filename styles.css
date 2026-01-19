@@ -207,28 +207,28 @@ h1 {
     overflow: hidden;
     transform-style: preserve-3d;
 
-    /* Enhanced card thickness: multiple shadow layers for realistic depth */
+    /* VISIBLE CARD THICKNESS: pronounced embossed edges and depth */
     box-shadow:
-        /* Primary depth shadow - card sitting on surface */
-        0 12px 24px rgba(0, 0, 0, 0.4),
-        /* Card edge embossing - top edge highlight */
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        /* Card edge embossing - bottom edge shadow */
-        inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-        /* Side thickness shadows - left edge */
-        inset 1px 0 0 rgba(0, 0, 0, 0.1),
-        /* Side thickness shadows - right edge */
-        inset -1px 0 0 rgba(0, 0, 0, 0.1),
-        /* Corner rounding shadows for thickness */
-        2px 2px 4px rgba(0, 0, 0, 0.2),
-        -2px 2px 4px rgba(0, 0, 0, 0.2),
-        2px -2px 4px rgba(0, 0, 0, 0.2),
-        -2px -2px 4px rgba(0, 0, 0, 0.2);
+        /* Main depth shadow - card sitting on surface */
+        0 16px 32px rgba(0, 0, 0, 0.5),
+        /* STRONG embossed top edge - bright white highlight */
+        inset 0 3px 6px rgba(255, 255, 255, 0.4),
+        /* STRONG embossed bottom edge - deep black shadow */
+        inset 0 -3px 6px rgba(0, 0, 0, 0.6),
+        /* STRONG left edge thickness */
+        inset 3px 0 6px rgba(0, 0, 0, 0.4),
+        /* STRONG right edge thickness */
+        inset -3px 0 6px rgba(0, 0, 0, 0.4),
+        /* Corner thickness effects - very visible */
+        4px 4px 8px rgba(0, 0, 0, 0.3),
+        -4px 4px 8px rgba(0, 0, 0, 0.3),
+        4px -4px 8px rgba(0, 0, 0, 0.3),
+        -4px -4px 8px rgba(0, 0, 0, 0.3);
 
     transition: box-shadow 0.3s ease;
 }
 
-/* Thickness enhancement - add a subtle border for edge definition */
+/* VISIBLE THICKNESS BORDER - raised edge effect */
 .card-inner::before {
     content: '';
     position: absolute;
@@ -237,26 +237,27 @@ h1 {
     right: 0;
     bottom: 0;
     border-radius: var(--card-radius);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5);
     pointer-events: none;
     z-index: 5;
 }
 
-/* Enhanced thickness on hover - card appears to lift slightly */
+/* DRAMATIC THICKNESS ON HOVER - card floats and edges become more pronounced */
 .tarot-card:hover .card-inner {
     box-shadow:
-        /* Card lifts off surface - reduced depth shadow */
-        0 16px 32px rgba(0, 0, 0, 0.3),
-        /* Enhanced embossing on hover */
-        inset 0 2px 0 rgba(255, 255, 255, 0.2),
-        inset 0 -2px 0 rgba(0, 0, 0, 0.15),
-        inset 2px 0 0 rgba(0, 0, 0, 0.08),
-        inset -2px 0 0 rgba(0, 0, 0, 0.08),
-        /* Corner thickness enhancement */
-        3px 3px 6px rgba(0, 0, 0, 0.25),
-        -3px 3px 6px rgba(0, 0, 0, 0.25),
-        3px -3px 6px rgba(0, 0, 0, 0.25),
-        -3px -3px 6px rgba(0, 0, 0, 0.25);
+        /* Card lifts dramatically off surface */
+        0 24px 48px rgba(0, 0, 0, 0.4),
+        /* SUPER embossed edges on hover */
+        inset 0 4px 8px rgba(255, 255, 255, 0.6),
+        inset 0 -4px 8px rgba(0, 0, 0, 0.7),
+        inset 4px 0 8px rgba(0, 0, 0, 0.5),
+        inset -4px 0 8px rgba(0, 0, 0, 0.5),
+        /* Enhanced corner thickness */
+        6px 6px 12px rgba(0, 0, 0, 0.4),
+        -6px 6px 12px rgba(0, 0, 0, 0.4),
+        6px -6px 12px rgba(0, 0, 0, 0.4),
+        -6px -6px 12px rgba(0, 0, 0, 0.4);
 }
 
 .tarot-card:hover .card-inner {
