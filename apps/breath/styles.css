@@ -1,0 +1,320 @@
+/* Anthropic-inspired color palette */
+:root {
+    --bg-primary: #FAF9F7;
+    --bg-secondary: #F3F1ED;
+    --beige: #E8E4DE;
+    --beige-dark: #D4CFC7;
+    --accent: #D97706;
+    --accent-dark: #B45309;
+    --accent-darker: #92400E;
+    --text-primary: #4A4540;
+    --text-secondary: #7A756D;
+    --text-muted: #A8A29E;
+
+    /* Chart colors - distinct for visibility */
+    --inhale-color: #D97706;
+    --hold-color: #0D9488;
+    --exhale-color: #8B5CF6;
+    --retention-color: #EC4899;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+/* Views */
+.view {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Header */
+header {
+    padding: 2rem 1.5rem 1rem;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+/* Home View */
+.home-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 2rem;
+}
+
+.chart-container {
+    flex: 1;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    padding: 1.5rem;
+    position: relative;
+    min-height: 300px;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.empty-state {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+}
+
+.empty-state .hint {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* Buttons */
+.primary-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.primary-btn:hover {
+    background: var(--accent-dark);
+}
+
+.primary-btn:active {
+    transform: scale(0.98);
+}
+
+.secondary-btn {
+    background: var(--beige);
+    color: var(--text-primary);
+    border: none;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.secondary-btn:hover {
+    background: var(--beige-dark);
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.back-btn:hover {
+    color: var(--text-primary);
+}
+
+/* Breathing View Header */
+#breathing-view header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+}
+
+.session-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Breathing Content */
+.breathing-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    gap: 2rem;
+}
+
+/* Breathing Circle */
+.breathing-circle {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 3px solid var(--beige-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.breathing-circle:hover {
+    border-color: var(--accent);
+}
+
+.breathing-circle:active {
+    transform: scale(0.97);
+}
+
+/* Circle States */
+.breathing-circle.inhale {
+    border-color: var(--inhale-color);
+    background: rgba(217, 119, 6, 0.08);
+    box-shadow: 0 0 30px rgba(217, 119, 6, 0.15);
+}
+
+.breathing-circle.hold {
+    border-color: var(--hold-color);
+    background: rgba(13, 148, 136, 0.08);
+    box-shadow: 0 0 30px rgba(13, 148, 136, 0.15);
+}
+
+.breathing-circle.exhale {
+    border-color: var(--exhale-color);
+    background: rgba(139, 92, 246, 0.08);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+}
+
+.breathing-circle.retention {
+    border-color: var(--retention-color);
+    background: rgba(236, 72, 153, 0.08);
+    box-shadow: 0 0 30px rgba(236, 72, 153, 0.15);
+}
+
+.timer {
+    font-size: 3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.phase {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.25rem;
+}
+
+.breathing-circle.inhale .phase,
+.breathing-circle.hold .phase,
+.breathing-circle.exhale .phase {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Cycle Info */
+.cycle-info {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Current Cycle Stats */
+.current-cycle {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .breathing-circle {
+        width: 200px;
+        height: 200px;
+    }
+
+    .timer {
+        font-size: 2.5rem;
+    }
+
+    .current-cycle {
+        gap: 1.25rem;
+        padding: 0.875rem 1.25rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .home-content {
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .breathing-circle {
+        width: 280px;
+        height: 280px;
+    }
+
+    .timer {
+        font-size: 3.5rem;
+    }
+}

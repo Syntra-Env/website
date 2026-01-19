@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breath - Breathing Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Home View -->
+    <div id="home-view" class="view">
+        <header>
+            <h1>Breath</h1>
+            <p class="subtitle">Track your breathing journey</p>
+        </header>
+
+        <main class="home-content">
+            <div class="chart-container">
+                <canvas id="breathing-chart"></canvas>
+                <div id="empty-state" class="empty-state">
+                    <p>No sessions yet</p>
+                    <p class="hint">Start breathing to see your trends</p>
+                </div>
+            </div>
+
+            <button id="start-btn" class="primary-btn">
+                Start Breathing
+            </button>
+        </main>
+    </div>
+
+    <!-- Breathing View -->
+    <div id="breathing-view" class="view hidden">
+        <header>
+            <button id="back-btn" class="back-btn">&larr; Back</button>
+            <span class="session-label">Session in progress</span>
+        </header>
+
+        <main class="breathing-content">
+            <div id="breathing-circle" class="breathing-circle">
+                <span id="timer-display" class="timer">0.0</span>
+                <span id="phase-label" class="phase">Tap to start</span>
+            </div>
+
+            <div class="cycle-info">
+                <span id="cycle-count">Cycle: 0</span>
+            </div>
+
+            <div class="current-cycle">
+                <div class="stat">
+                    <span class="stat-label">Inhale</span>
+                    <span id="current-inhale" class="stat-value">-</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Hold</span>
+                    <span id="current-hold" class="stat-value">-</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Exhale</span>
+                    <span id="current-exhale" class="stat-value">-</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Retention</span>
+                    <span id="current-retention" class="stat-value">-</span>
+                </div>
+            </div>
+
+            <button id="end-session-btn" class="secondary-btn">
+                End Session
+            </button>
+        </main>
+    </div>
+
+    <script src="chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

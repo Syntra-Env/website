@@ -1,0 +1,158 @@
+/* Same warm Anthropic-inspired palette */
+:root {
+    --bg-primary: #FAF9F7;
+    --bg-secondary: #F3F1ED;
+    --beige: #E8E4DE;
+    --beige-dark: #D4CFC7;
+    --accent: #D97706;
+    --accent-dark: #B45309;
+    --text-primary: #4A4540;
+    --text-secondary: #7A756D;
+    --text-muted: #A8A29E;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    padding: 3rem 1.5rem 2rem;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+}
+
+/* App Grid */
+.app-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* App Card */
+.app-card {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.app-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(74, 69, 64, 0.1);
+}
+
+.app-card.placeholder {
+    opacity: 0.5;
+    pointer-events: none;
+    border: 2px dashed var(--beige-dark);
+    background: transparent;
+}
+
+.app-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--beige);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.app-icon svg {
+    width: 24px;
+    height: 24px;
+    color: var(--accent);
+}
+
+.app-info {
+    flex: 1;
+}
+
+.app-info h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.app-info p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.app-arrow {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+    align-self: center;
+}
+
+.app-card:hover .app-arrow {
+    transform: translateX(4px);
+    color: var(--accent);
+}
+
+/* Footer */
+footer {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    header {
+        padding: 2rem 1rem 1.5rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .app-grid {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .app-card {
+        padding: 1.25rem;
+    }
+}
