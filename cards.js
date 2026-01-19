@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Disable hover effects during animation
             card.style.pointerEvents = 'none';
 
-            // Animate card to center, lift it forward, spin and zoom
+            // Animate card to center, lift it forward
             tl.to(card, {
                 x: translateX,
                 y: translateY,
@@ -131,13 +131,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 ease: "power2.inOut"
             }, 0);
 
-            // Spin and zoom in dramatically - full rotation and more
+            // Spin and zoom in - one full rotation
             tl.to(cardLink, {
-                rotateY: 1080,
+                rotateY: 360,
                 scale: 3,
                 duration: 1.0,
-                ease: "power2.in"
-            }, 0.3);
+                ease: "linear"
+            }, 0);
 
             // Fade out everything else
             tl.to('.app-grid', {
