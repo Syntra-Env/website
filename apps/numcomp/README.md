@@ -108,17 +108,17 @@ Fit line to data:
 - **Visualization**: Chart.js for plotting
 - **UI**: Vanilla JavaScript with Portal theme integration
 
-## Current Limitations
+## Usage Notes
 
-- **No visual connections yet**: Nodes execute independently (Phase 11 pending)
-- **No drag-to-connect**: Connection system not yet implemented
-- **Workflow execution**: Currently runs all nodes, doesn't follow connection graph
+- **Visual Connections**: Drag from output sockets (right side, orange) to input sockets (left side, blue)
+- **Connection Validation**: Prevents self-connections and circular dependencies
+- **Remove Connections**: Click on an input socket to remove its connection
+- **Workflow Execution**: Follows connection graph using topological sort
 
 ## Coming Soon
 
-- Visual node connection system (drag from output to input sockets)
-- Workflow execution based on connection graph
 - Save/load workflows to localStorage
 - Export results and plots
 - Step-by-step algorithm visualization
-- More interactive controls
+- Interactive control editing with click-to-edit interface
+- More chart types for Plot node

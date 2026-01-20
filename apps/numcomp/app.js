@@ -73,6 +73,11 @@ let isDragging = false;
 let dragNode = null;
 let dragOffsetX = 0, dragOffsetY = 0;
 
+// Connection creation state
+let isCreatingConnection = false;
+let connectionStart = null; // { nodeId, socketKey, socketType: 'output', x, y }
+let connectionEnd = { x: 0, y: 0 };
+
 function initCanvas() {
     canvas = document.createElement('canvas');
     canvas.width = reteEditor.clientWidth;
@@ -101,7 +106,54 @@ function handleMouseDown(e) {
     const x = (e.clientX - rect.left - panX) / scale;
     const y = (e.clientY - rect.top - panY) / scale;
 
-    // Check if clicking on a node
+    // Check if clicking on a socket
+    for (const [id, node] of state.nodes) {
+        // Check output sockets
+        let offsetY = 40 + Object.keys(node.inputs).length * 30 + Object.keys(node.controls).length * 40;
+        for (const [key, output] of Object.entries(node.outputs)) {
+            const socketX = node.x + 172;
+            const socketY = node.y + offsetY + 15;
+            const dist = Math.sqrt((x - socketX) ** 2 + (y - socketY) ** 2);
+
+            if (dist < 8) {
+                // Start creating connection from output
+                isCreatingConnection = true;
+                connectionStart = {
+                    nodeId: id,
+                    socketKey: key,
+                    socketType: 'output',
+                    x: socketX,
+                    y: socketY
+                };
+                connectionEnd = { x, y };
+                return;
+            }
+            offsetY += 30;
+        }
+
+        // Check input sockets
+        offsetY = 40;
+        for (const [key, input] of Object.entries(node.inputs)) {
+            const socketX = node.x + 8;
+            const socketY = node.y + offsetY + 15;
+            const dist = Math.sqrt((x - socketX) ** 2 + (y - socketY) ** 2);
+
+            if (dist < 8) {
+                // Check if clicking on an existing connection to remove it
+                const existingConn = state.connections.findIndex(c =>
+                    c.to === id && c.toInput === key
+                );
+                if (existingConn !== -1) {
+                    state.connections.splice(existingConn, 1);
+                    render();
+                    return;
+                }
+            }
+            offsetY += 30;
+        }
+    }
+
+    // Check if clicking on a node (for dragging)
     for (const [id, node] of state.nodes) {
         if (x >= node.x && x <= node.x + 180 &&
             y >= node.y && y <= node.y + getNodeHeight(node)) {
@@ -117,10 +169,14 @@ function handleMouseDown(e) {
 }
 
 function handleMouseMove(e) {
-    if (dragNode) {
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left - panX) / scale;
-        const y = (e.clientY - rect.top - panY) / scale;
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left - panX) / scale;
+    const y = (e.clientY - rect.top - panY) / scale;
+
+    if (isCreatingConnection) {
+        connectionEnd = { x, y };
+        render();
+    } else if (dragNode) {
         dragNode.x = x - dragOffsetX;
         dragNode.y = y - dragOffsetY;
         render();
@@ -132,6 +188,46 @@ function handleMouseMove(e) {
 }
 
 function handleMouseUp(e) {
+    if (isCreatingConnection) {
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX - rect.left - panX) / scale;
+        const y = (e.clientY - rect.top - panY) / scale;
+
+        // Check if we're over an input socket
+        for (const [targetId, targetNode] of state.nodes) {
+            let offsetY = 40;
+            for (const [inputKey, input] of Object.entries(targetNode.inputs)) {
+                const socketX = targetNode.x + 8;
+                const socketY = targetNode.y + offsetY + 15;
+                const dist = Math.sqrt((x - socketX) ** 2 + (y - socketY) ** 2);
+
+                if (dist < 8) {
+                    // Check if connection is valid
+                    if (validateConnection(connectionStart.nodeId, targetId)) {
+                        // Remove existing connection to this input
+                        state.connections = state.connections.filter(c =>
+                            !(c.to === targetId && c.toInput === inputKey)
+                        );
+
+                        // Add new connection
+                        state.connections.push({
+                            from: connectionStart.nodeId,
+                            fromOutput: connectionStart.socketKey,
+                            to: targetId,
+                            toInput: inputKey
+                        });
+                    }
+                    break;
+                }
+                offsetY += 30;
+            }
+        }
+
+        isCreatingConnection = false;
+        connectionStart = null;
+        render();
+    }
+
     isDragging = false;
     dragNode = null;
 }
@@ -150,6 +246,31 @@ function getNodeHeight(node) {
     height += Object.keys(node.controls).length * 40;
     height += Object.keys(node.outputs).length * 30;
     return height;
+}
+
+function validateConnection(fromNodeId, toNodeId) {
+    // Prevent self-connections
+    if (fromNodeId === toNodeId) return false;
+
+    // Prevent circular dependencies (simple check)
+    // Check if toNode already connects to fromNode (directly or indirectly)
+    const visited = new Set();
+    const queue = [toNodeId];
+
+    while (queue.length > 0) {
+        const currentId = queue.shift();
+        if (currentId === fromNodeId) return false; // Circular dependency detected
+        if (visited.has(currentId)) continue;
+        visited.add(currentId);
+
+        // Add all nodes that currentNode outputs to
+        const outgoingConns = state.connections.filter(c => c.from === currentId);
+        for (const conn of outgoingConns) {
+            queue.push(conn.to);
+        }
+    }
+
+    return true;
 }
 
 function render() {
@@ -175,6 +296,22 @@ function render() {
             ctx.bezierCurveTo(x1 + 50, y1, x2 - 50, y2, x2, y2);
             ctx.stroke();
         }
+    }
+
+    // Draw temporary connection while creating
+    if (isCreatingConnection && connectionStart) {
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(connectionStart.x, connectionStart.y);
+        ctx.bezierCurveTo(
+            connectionStart.x + 50, connectionStart.y,
+            connectionEnd.x - 50, connectionEnd.y,
+            connectionEnd.x, connectionEnd.y
+        );
+        ctx.stroke();
+        ctx.setLineDash([]);
     }
 
     // Draw nodes
