@@ -214,9 +214,11 @@ document.addEventListener('DOMContentLoaded', () => {
         ease: "power2.inOut"
     }, holdTime);
 
-    // Fade out just the background color
+    // Fade out just the background color (use theme-appropriate transparent)
+    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+    const fadeTarget = isDark ? 'rgba(26, 21, 18, 0)' : 'rgba(250, 249, 247, 0)';
     tl.to(loadingScreen, {
-        backgroundColor: 'rgba(0, 0, 0, 0)',
+        backgroundColor: fadeTarget,
         duration: moveToCornerDuration,
         ease: "none"
     }, holdTime);

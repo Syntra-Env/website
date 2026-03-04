@@ -99,10 +99,53 @@
     animation: starPulse 2s ease-in-out infinite;
 }
 
+/* Hero — centered tagline + nav link */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.site-tagline {
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.hero-nav {
+    display: flex;
+    gap: 2rem;
+}
+
+.hero-link {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.hero-link:hover {
+    color: var(--text-primary);
+}
+
 /* Main content hidden until loaded */
 #main-content {
     opacity: 0;
     position: fixed;
+    inset: 0;
+}
+
+#main-content.visible {
+    opacity: 1;
+}
+
+/* Blog page — bezel inset for the pane */
+#main-content.blog-layout {
     inset: 4.5rem 1rem 1rem;
 }
 
@@ -117,32 +160,13 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    font-family: 'Computer Modern Serif', 'Latin Modern Roman', Georgia, serif;
     background-color: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
     line-height: 1.5;
     display: flex;
     flex-direction: column;
-}
-
-/* Header */
-header {
-    padding: 3rem 1.5rem 2rem;
-    text-align: center;
-}
-
-h1 {
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: -0.02em;
-}
-
-.subtitle {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    margin-top: 0.5rem;
 }
 
 /* Post Grid — three cards per row */
@@ -177,13 +201,8 @@ h1 {
 
 .tarot-card {
     --card-radius: 12px;
-    --tilt-x: 0deg;
-    --tilt-y: 0deg;
-
     width: 100%;
-    aspect-ratio: 16 / 10;
     cursor: pointer;
-    perspective: 800px;
 }
 
 .card-rotator {
@@ -192,70 +211,45 @@ h1 {
     height: 100%;
     text-decoration: none;
     color: inherit;
-    transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
-    transition: transform 0.15s ease-out;
 }
 
 .card-inner {
     position: relative;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: 1fr auto;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     border-radius: var(--card-radius);
     overflow: hidden;
-    background: var(--bg-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* Bottom gradient scrim — absolutely positioned over the image */
-.card-scrim {
+/* Emboss overlay — revealed near the mouse */
+.card-inner::before {
+    content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(to bottom, transparent, var(--bg-secondary));
-    z-index: 1;
+    inset: 0;
+    border-radius: var(--card-radius);
+    box-shadow: inset 0 0 6px 2px rgba(255, 255, 255, 0.5);
+    opacity: 0;
     pointer-events: none;
+    z-index: 3;
 }
 
-.tarot-card:hover .card-inner {
-    border-color: rgba(255, 255, 255, 0.22);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+[data-theme="light"] .card-inner::before {
+    box-shadow: inset 0 0 6px 2px rgba(0, 0, 0, 0.25);
 }
 
-/* Image — fills the entire card as background */
-.card-image {
-    grid-column: 1 / -1;
-    grid-row: 1 / -1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    overflow: hidden;
+.card-inner.emboss-active::before {
+    opacity: 1;
+    mask-image: radial-gradient(circle 80px at var(--mouse-x) var(--mouse-y), black 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle 80px at var(--mouse-x) var(--mouse-y), black 0%, transparent 100%);
 }
 
-.card-art {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
-    border-radius: 8px;
-}
-
-/* Content — overlaid at bottom-left, above scrim */
+/* Content — title + description at bottom */
 .card-content {
-    grid-column: 1;
-    grid-row: 2;
-    padding: 1rem 1.25rem;
-    z-index: 2;
+    padding: 1rem 1.25rem 0.5rem;
 }
 
 .card-title {
@@ -274,12 +268,9 @@ h1 {
 
 /* Metadata — date at bottom-right */
 .card-meta {
-    grid-column: 2;
-    grid-row: 2;
-    padding: 1rem 1.25rem;
+    padding: 0 1.25rem 1rem;
     display: flex;
-    align-items: flex-end;
-    z-index: 2;
+    justify-content: flex-end;
 }
 
 .card-date {
@@ -297,14 +288,6 @@ h1 {
 
 .tarot-card.draft .card-inner {
     border-style: dashed;
-}
-
-/* Footer */
-footer {
-    padding: 2rem 1.5rem;
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 0.875rem;
 }
 
 /* Responsive */

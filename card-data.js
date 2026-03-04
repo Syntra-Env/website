@@ -3,7 +3,6 @@ const cardData = [
     {
         title: 'Hello World',
         description: 'First blog post — testing Markdown rendering',
-        image: '',
         slug: 'hello-world',
         date: '2026-03-01',
         draft: false,
@@ -23,10 +22,6 @@ function createCardElement(card) {
     cardDiv.innerHTML = `
         <${rotatorTag} ${rotatorAttrs} class="card-rotator">
             <div class="card-inner">
-                <div class="card-image">
-                    <img src="${card.image}" alt="${card.title}" class="card-art">
-                </div>
-                <div class="card-scrim"></div>
                 <div class="card-content">
                     <h2 class="card-title">${card.title}</h2>
                     <p class="card-description">${card.description}</p>
@@ -40,14 +35,6 @@ function createCardElement(card) {
 
     return cardDiv;
 }
-
-// Keep card aspect ratio in sync with the viewport
-function syncViewportRatio() {
-    document.documentElement.style.setProperty('--vp-w', window.innerWidth);
-    document.documentElement.style.setProperty('--vp-h', window.innerHeight);
-}
-syncViewportRatio();
-window.addEventListener('resize', syncViewportRatio);
 
 // Initialize cards on page load
 function initializeCards() {

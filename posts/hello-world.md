@@ -1,7 +1,6 @@
 ---
 title: Hello World
 date: 2026-03-01
-links: [GitHub | https://github.com, Marked.js | https://marked.js.org]
 ---
 
 This is the first blog post on Syntra, rendered straight from a Markdown file.
@@ -18,7 +17,6 @@ Each post supports YAML frontmatter at the top of the file:
 ---
 title: My Post Title
 date: 2026-03-01
-links: [GitHub | https://github.com/you/repo, Live Demo | https://example.com]
 ---
 ```
 

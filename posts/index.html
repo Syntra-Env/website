@@ -37,7 +37,6 @@
         <header class="post-header">
             <h1 class="post-title" id="post-title"></h1>
             <div class="post-date" id="post-date"></div>
-            <div class="post-links" id="post-links"></div>
         </header>
         <div class="post-content" id="post-content">
             <p style="color: var(--text-muted);">Loading...</p>
@@ -100,17 +99,6 @@
                 document.title = title + ' — Syntra';
                 document.getElementById('post-title').textContent = title;
                 document.getElementById('post-date').textContent = meta.date || '';
-
-                if (meta.links) {
-                    const links = Array.isArray(meta.links) ? meta.links : [meta.links];
-                    document.getElementById('post-links').innerHTML =
-                        links.map(l => {
-                            const [label, url] = l.split('|').map(s => s.trim());
-                            return url
-                                ? '<a class="post-link" href="' + url + '" target="_blank" rel="noopener">' + label + '</a>'
-                                : '<span class="post-link">' + label + '</span>';
-                        }).join('');
-                }
 
                 document.getElementById('post-content').innerHTML = marked.parse(body);
             })
