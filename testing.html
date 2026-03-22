@@ -8,24 +8,38 @@
 <body>
 <h1>Testing Strategy</h1>
 
-<p>
-We layer tests to enforce the command laws and guard real behavior:
-</p>
+<p>Testing approach across Syntra projects: unit tests, contract tests, and integration tests.</p>
 
+<h2>Unit Tests</h2>
+<p>Pure functions with no side effects. Test parsing, analysis, and mathematical computations.</p>
+
+<h2>Contract Tests</h2>
+<p>API endpoints validated against expected response shapes and invariants.</p>
+
+<h2>Integration Tests</h2>
+<p>End-to-end workflows testing full pipelines from input to output.</p>
+
+<h2>Projects</h2>
+
+<h3>Scribe</h3>
+<p>Audio transcription server. Unit tests cover:</p>
 <ul>
-<li><strong>Unit (pure helpers)</strong>: parsing (<code>parse<em>verse</em>ref</code>, <code>parse<em>number</code>), analysis merge (<code>build</em>analysis_tokens</code>). Property/edge-case coverage, no IO.</li>
-<li><strong>Contract/API</strong>: call <code>/api/verse</code>, <code>/api/morphology</code>, <code>/api/dependency</code> against a small fixture database/index; assert shape and invariants (surah/ayah ≥ 1, tokens present). See <code>desktop/src-tauri/tests/contract/api<em>contracts.rs</code>. Set <code>KALIMA</em>BASE_URL</code> if not using the default.</li>
-<li><strong>UI end-to-end (Tauri)</strong>: WebDriver driving the native Tauri app (WebView). See <code>tests/e2e-tauri/README.md</code> and run <code>npm run test:e2e</code>.</li>
-<li><strong>Fixtures</strong>: deterministic data under <code>fixtures/</code> (or <code>data/database</code> for the small test DB) to keep tests fast and reproducible.</li>
+<li>File saving and directory management</li>
+<li>Job state transitions (running, done, error)</li>
+<li>CORS handling</li>
+</ul>
+<p>Run with: <code>python -m pytest tests/</code></p>
+
+<h3>Linguist</h3>
+<p>Quranic analysis server. Tests cover:</p>
+<ul>
+<li>Database operations (claims, evidence, patterns)</li>
+<li>MCP tool invocations</li>
+<li>Query validation</li>
 </ul>
 
-<p>
-Targets:
-</p>
-<ul>
-<li>Default CI: unit + contract tests on fixtures; UI E2E on a minimal dataset.</li>
-<li>Local full run: <code>cargo test</code> in <code>desktop/src-tauri</code>, <code>npm run test:e2e</code>, API contract tests.</li>
-</ul>
+<h2>Test Data</h2>
+<p>Use small, deterministic fixture datasets to keep tests fast and reproducible.</p>
 
 </body>
 </html>
