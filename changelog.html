@@ -3,9 +3,193 @@
 <head>
 <link rel="stylesheet" href="styles.css">
 <meta charset="utf-8">
-<title>changelog.html</title>
+<title>Changelog</title>
 </head>
 <body>
+<h1>Changelog</h1>
+
+<p>All notable changes to the Syntra/Kalima project are documented here.</p>
+
+<h2 id="v2026">2026</h2>
+
+<h3 id="march-2026">March 2026</h3>
+<ul>
+<li><strong>Restructured documentation</strong> - Consolidated all research docs to dedicated website repo for GitHub Pages hosting</li>
+<li><strong>Created Syntra Architecture docs</strong> - Core context, goals, ecosystem overview, and technical implementation documented</li>
+<li><strong>Moved documentation to website</strong> - Added ADR, design docs, operations docs from Theologian repo</li>
+</ul>
+
+<h3 id="february-2026">February 2026</h3>
+<ul>
+<li><strong>Geometer module created</strong> - Math modules moved from Theologian to Geometer repo for better separation of concerns</li>
+<li><strong>MCP server cleanup</strong> - Dead code removal, performance fixes, schema alignment, documentation reorganization</li>
+</ul>
+
+<h2 id="v2025">2025</h2>
+
+<h3 id="december-2025">December 2025</h3>
+<ul>
+<li><strong>Layer-based linguistic exploration (ADR-005)</strong>
+  <ul>
+    <li>Adopted layer system for exploring linguistic data in UI</li>
+    <li>Removed legacy <code>inspect</code> command from CLI</li>
+    <li>Users now explore via <code>layer &lt;name|number&gt;</code> and <code>layer next|prev</code></li>
+  </ul>
+</li>
+<li><strong>Tauri E2E testing via WebDriver (ADR-006)</strong>
+  <ul>
+    <li>Implemented <code>tauri-driver</code> + WebdriverIO for native E2E tests</li>
+    <li>Tests now exercise actual Tauri runtime, not just browser</li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="november-2025">November 2025</h3>
+<ul>
+<li><strong>Python to Rust migration (ADR-001)</strong>
+  <ul>
+    <li>Complete backend rewrite in Rust</li>
+    <li>10-100x performance improvement (10-50ms search vs 500-1000ms)</li>
+    <li>Memory reduced from 200MB+ to ~50MB</li>
+    <li>Single static binary deployment</li>
+  </ul>
+</li>
+<li><strong>SQLite for storage (ADR-002)</strong>
+  <ul>
+    <li>Chose SQLite with sqlx for async queries</li>
+    <li>Zero configuration, single file database</li>
+    <li>Sub-millisecond query latency for indexed lookups</li>
+  </ul>
+</li>
+<li><strong>Tantivy for search (ADR-003)</strong>
+  <ul>
+    <li>Pure Rust full-text search engine</li>
+    <li>Sub-50ms queries for morphological searches</li>
+    <li>~8MB index size for full Quran corpus</li>
+    <li>Faceted search on root, POS, pattern, verb_form, gender, number, case, voice, mood, tense, aspect</li>
+  </ul>
+</li>
+<li><strong>Vanilla JavaScript frontend (ADR-004)</strong>
+  <ul>
+    <li>No frontend framework (282 LOC total)</li>
+    <li>Zero npm packages for runtime</li>
+    <li>Terminal-like interface with Arabic RTL support</li>
+    <li>Built with Tauri for native desktop packaging</li>
+  </ul>
+</li>
+<li><strong>Tauri desktop app archived</strong>
+  <ul>
+    <li>Shifted to OpenCode + MCP server integration</li>
+    <li>Desktop Tauri app moved to <code>archive/desktop-tauri-20260120/</code></li>
+    <li>Rust engine moved to <code>archive/engine-rust-20260120/</code></li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="october-2025">October 2025</h3>
+<ul>
+<li><strong>Functional Quran Reader</strong> - Basic verse display and navigation working</li>
+<li><strong>Pattern search</strong> - Working on pattern-based verse search</li>
+<li><strong>Compositional Model Phase 3</strong>
+  <ul>
+    <li>Morpheme Library implemented</li>
+    <li>Atomic Decomposition verified</li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="september-2025">September 2025</h3>
+<ul>
+<li><strong>HUFD/UOR Implementation</strong>
+  <ul>
+    <li>Information Density metrics</li>
+    <li>Ring Substrate</li>
+    <li>Topological Pipeline</li>
+    <li>Resolution Engine</li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="august-2025">August 2025</h3>
+<ul>
+<li><strong>Holonomic Research Environment finalized</strong>
+  <ul>
+    <li>Rigorous HUFD math</li>
+    <li>Consolidated toolset</li>
+    <li>Repository cleanup</li>
+  </ul>
+</li>
+<li><strong>Holonomic Unified Field Dynamics</strong> - HUFD architecture for constant-attention manifold</li>
+</ul>
+
+<h3 id="july-2025">July 2025</h3>
+<ul>
+<li><strong>Morpheme/word type deduplication</strong> - Improved data integrity</li>
+<li><strong>Entry content addressing</strong> - UOR content addressing logic added</li>
+</ul>
+
+<h3 id="june-2025">June 2025</h3>
+<ul>
+<li><strong>Information processing complexity as spacetime curvature</strong> - Research paper on formal derivation</li>
+<li><strong>MCP cleanup</strong> - Dead code removal, performance fixes, documentation reorganization</li>
+</ul>
+
+<h3 id="may-2025">May 2025</h3>
+<ul>
+<li><strong>Pure Compositional Model</strong>
+  <ul>
+    <li>100% character-perfect alignment with Tanzil</li>
+    <li>Legacy columns removed from segments table</li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="april-2025">April 2025</h3>
+<ul>
+<li><strong>Quranic Migration completed</strong>
+  <ul>
+    <li>100% character-perfect compositional model</li>
+    <li>Scaffolding removed</li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="march-2025">March 2025</h3>
+<ul>
+<li><strong>Morpheme Library integration</strong> - Each morpheme now an interpretation-ready feature</li>
+<li><strong>Units normalization</strong> - Migrated from deprecated entries table to holonomic_entries</li>
+</ul>
+
+<h3 id="february-2025">February 2025</h3>
+<ul>
+<li><strong>Root vectors cache table</strong> - Pre-computed profiles for faster lookups</li>
+<li><strong>Transcriber UI</strong> - Interactive tool for text transcription</li>
+<li><strong>Visualizer</strong> - Data visualization tool added</li>
+</ul>
+
+<h3 id="january-2025">January 2025</h3>
+<ul>
+<li><strong>MCP server rewrite</strong> - Migrated from TypeScript to Python</li>
+<li><strong>Database schema normalization</strong>
+  <ul>
+    <li>Segments normalized to FK columns</li>
+    <li>verse_evidence replaced with entries</li>
+    <li>Entry terms table removed, features utility added</li>
+  </ul>
+</li>
+</ul>
+
+<h2 id="architecture-decisions">Architecture Decisions</h2>
+
+<p>See individual ADRs for detailed rationale:</p>
+<ul>
+<li><a href="adr/001-rust-backend-migration.html">ADR-001: Rust Backend Migration</a></li>
+<li><a href="adr/002-sqlite-for-storage.html">ADR-002: SQLite for Storage</a></li>
+<li><a href="adr/003-tantivy-for-search.html">ADR-003: Tantivy for Search</a></li>
+<li><a href="adr/004-vanilla-javascript-frontend.html">ADR-004: Vanilla JS Frontend</a></li>
+<li><a href="adr/005-layer-based-linguistic-exploration.html">ADR-005: Layer-Based Exploration</a></li>
+<li><a href="adr/006-tauri-webdriver-e2e-tests.html">ADR-006: Tauri WebDriver E2E Tests</a></li>
+</ul>
 
 </body>
 </html>
