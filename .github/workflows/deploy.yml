@@ -25,8 +25,10 @@ jobs:
 
       - name: Install Quarto
         run: |
-          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.9.36/quarto-1.9.36-linux-amd64.tar.gz
-          tar -xzf quarto-1.9.36-linux-amd64.tar.gz
+          which wget || which curl
+          curl -L -o quarto.tar.gz https://github.com/quarto-dev/quarto-cli/releases/download/v1.9.36/quarto-1.9.36-linux-amd64.tar.gz
+          tar -xzf quarto.tar.gz
+          ls -la
           sudo cp -r quarto-1.9.36/quarto /usr/local/bin/
           quarto --version
 
