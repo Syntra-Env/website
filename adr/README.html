@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<title>Architecture Decision Records (ADRs)</title>
+</head>
+<body>
+<h1>Architecture Decision Records (ADRs)</h1>
+
+<p>
+This directory contains Architecture Decision Records (ADRs) documenting significant architectural and design decisions made in the Kalima project.
+</p>
+
+<h2>What is an ADR?</h2>
+
+<p>
+An Architecture Decision Record (ADR) is a document that captures an important architectural decision made along with its context and consequences. ADRs help teams:
+</p>
+
+<li>Understand <strong>why</strong> decisions were made, not just <strong>what</strong> was decided</li>
+<li>Onboard new team members by documenting historical context</li>
+<li>Avoid relitigating past decisions</li>
+<li>Learn from both successful and unsuccessful choices</li>
+
+<h2>Format</h2>
+
+<p>
+Each ADR follows this structure:
+</p>
+<li><strong>Title</strong>: Short, descriptive name (e.g., "Use SQLite for Storage")</li>
+<li><strong>Status</strong>: Proposed, Accepted, Deprecated, Superseded</li>
+<li><strong>Context</strong>: What forces/constraints led to the decision</li>
+<li><strong>Decision</strong>: What was decided</li>
+<li><strong>Rationale</strong>: Why this choice over alternatives</li>
+<li><strong>Consequences</strong>: Positive, negative, and neutral outcomes</li>
+<li><strong>Alternatives Considered</strong>: Other options and why they were rejected</li>
+
+<h2>Index</h2>
+
+<table><thead><tr><th>ADR</th><th>Title</th><th>Status</th><th>Date</th></tr></thead><tbody>
+</tbody></table>
+<table><thead><tr><th><a href="001-rust-backend-migration.md">001</a></th><th>Migrate Backend from Python to Rust</th><th>Accepted</th><th>2025-11-01</th></tr></thead><tbody>
+<tr><td><a href="002-sqlite-for-storage.md">002</a></td><td>Use SQLite for Primary Storage</td><td>Accepted</td><td>2025-11-01</td></tr>
+<tr><td><a href="003-tantivy-for-search.md">003</a></td><td>Use Tantivy for Full-Text Search</td><td>Accepted</td><td>2025-11-01</td></tr>
+<tr><td><a href="004-vanilla-javascript-frontend.md">004</a></td><td>Vanilla JavaScript Frontend (No Framework)</td><td>Accepted</td><td>2025-11-01</td></tr>
+<tr><td><a href="005-layer-based-linguistic-exploration.md">005</a></td><td>Layer-Based Linguistic Exploration (Remove <code>inspect</code>)</td><td>Accepted</td><td>2025-12-14</td></tr>
+<tr><td><a href="006-tauri-webdriver-e2e-tests.md">006</a></td><td>Tauri E2E Testing via WebDriver (<code>tauri-driver</code> + WebdriverIO)</td><td>Accepted</td><td>2025-12-14</td></tr>
+</tbody></table>
+
+<h2>Decision Categories</h2>
+
+<h3>Backend Architecture</h3>
+<li><a href="001-rust-backend-migration.md">ADR 001</a>: Why Rust over Python/Go/C++</li>
+<li><a href="002-sqlite-for-storage.md">ADR 002</a>: Why SQLite over PostgreSQL/NoSQL</li>
+<li><a href="003-tantivy-for-search.md">ADR 003</a>: Why Tantivy over Elasticsearch/MeiliSearch</li>
+
+<h3>Frontend Architecture</h3>
+<li><a href="004-vanilla-javascript-frontend.md">ADR 004</a>: Why no React/Vue/Angular</li>
+
+<h2>Creating New ADRs</h2>
+
+<p>
+When making significant architectural decisions:
+</p>
+
+<li>Copy the template from an existing ADR</li>
+<li>Number sequentially (next would be <code>005-title.md</code>)</li>
+<li>Fill in all sections thoughtfully</li>
+<li>Consider alternatives seriously (document why rejected)</li>
+<li>Add to this index</li>
+<li>Commit with the implementation or before if proposing</li>
+
+<h2>Key Principles</h2>
+
+<p>
+Based on our ADRs, Kalima values:
+</p>
+
+<li><strong>Performance over convenience</strong>: Rust chosen for 10-100x speedup</li>
+<li><strong>Simplicity over features</strong>: SQLite, vanilla JS chosen over complex alternatives</li>
+<li><strong>Type safety over flexibility</strong>: Compile-time guarantees preferred</li>
+<li><strong>Single-user optimization</strong>: Desktop-first, not distributed systems</li>
+<li><strong>Minimal dependencies</strong>: Reduce supply chain risk and complexity</li>
+
+<h2>References</h2>
+
+<li><a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">ADR process by Michael Nygard</a></li>
+<li><a href="https://adr.github.io/">ADR GitHub organization</a></li>
+<li>Our <a href="../RUNBOOK.md">RUNBOOK.md</a> for operational procedures</li>
+<li>Our <a href="../TESTING.md">TESTING.md</a> for testing strategy</li>
+
+</body>
+</html>
