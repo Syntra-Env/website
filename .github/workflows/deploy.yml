@@ -25,9 +25,9 @@ jobs:
 
       - name: Install Quarto
         run: |
-          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.42/quarto-1.6.42-linux-amd64.tar.gz
-          tar -xzf quarto-1.6.42-linux-amd64.tar.gz
-          sudo mv quarto-1.6.42-linux-amd64/quarto /usr/local/bin/
+          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.9.36/quarto-1.9.36-linux-amd64.tar.gz
+          tar -xzf quarto-1.9.36-linux-amd64.tar.gz
+          sudo mv quarto-1.9.36-linux-amd64/quarto /usr/local/bin/
 
       - name: Render Quarto
         run: quarto render
