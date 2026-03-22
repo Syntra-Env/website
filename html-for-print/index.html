@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syntra Research - Documentation</title>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'], ['$$','$$']] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1000px; margin: 0 auto; padding: 2rem; background: #f5f5f5; }
+        h1 { color: #333; border-bottom: 3px solid #f5c842; padding-bottom: 0.5rem; }
+        h2 { color: #555; margin-top: 2rem; }
+        .section { background: white; padding: 1.5rem; margin: 1rem 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+        a { color: #0066cc; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .card { background: #fafafa; padding: 1rem; border-radius: 4px; border-left: 4px solid #f5c842; }
+        .card h3 { margin: 0 0 0.5rem 0; font-size: 1rem; }
+        .card p { margin: 0; color: #666; font-size: 0.9rem; }
+        .badge { display: inline-block; background: #e0e0e0; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-left: 0.5rem; }
+        .print-btn { background: #333; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; }
+        .print-btn:hover { background: #555; }
+        .ar { font-family: "Amiri", serif; direction: rtl; font-size: 1.1em; }
+        footer { margin-top: 2rem; text-align: center; color: #666; font-size: 0.9rem; }
+        @media print {
+            body { background: white; }
+            .section { box-shadow: none; border: 1px solid #ddd; }
+            .print-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <h1>📚 Syntra Research Documentation</h1>
+    
+    <div class="section">
+        <p><strong>Open Quran Research - The Self-Correcting Seeker</strong></p>
+        <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    </div>
+
+    <div class="section">
+        <h2>📖 Research Papers</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Scholar Mathematical Framework <span class="badge">Core</span></h3>
+                <p>Mathematical foundations including HUFD and UOR</p>
+                <a href="Scholar Mathematical Framework.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Literature Review: Quranic Arabic NLP/ML</h3>
+                <p>Machine learning for classical Arabic analysis</p>
+                <a href="literature_review_quran_arabic_nlp_ml.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Database Graph</h3>
+                <p>Graph database structure and visualization</p>
+                <a href="database_graph.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Surah 1 Full Graph</h3>
+                <p>Analysis of Surah Al-Fatiha</p>
+                <a href="surah1_full_graph.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Limits of Mathematics</h3>
+                <p>Discussion on mathematical limitations</p>
+                <a href="Limits of the Mathematics.html">Read →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔧 Technical Design</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Context</h3>
+                <p>Project context and background</p>
+                <a href="Technical Design Document/01-context.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Goals</h3>
+                <p>Project goals and objectives</p>
+                <a href="Technical Design Document/02-goals.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Proposed Solution</h3>
+                <p>Technical solution overview</p>
+                <a href="Technical Design Document/03-proposed-solution.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Alternatives</h3>
+                <p>Alternative approaches</p>
+                <a href="Technical Design Document/04-alternatives.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Cross-Cutting Concerns</h3>
+                <p>Architectural concerns</p>
+                <a href="Technical Design Document/05-cross-cutting-concerns.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Observability</h3>
+                <p>Monitoring and observability</p>
+                <a href="Technical Design Document/06-observability.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Rollback</h3>
+                <p>Rollback procedures</p>
+                <a href="Technical Design Document/07-rollback.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Success Metrics</h3>
+                <p>Metrics for success</p>
+                <a href="Technical Design Document/08-success-metrics.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Timeline</h3>
+                <p>Project timeline</p>
+                <a href="Technical Design Document/09-timeline.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Glossary</h3>
+                <p>Terms and definitions</p>
+                <a href="Technical Design Document/10-glossary.html">Read →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>💡 UI Design</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Search-Write Juxtaposition</h3>
+                <p>Analysis of search and write operations</p>
+                <a href="search-write-juxtaposition.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Text Substitution Pattern</h3>
+                <p>Design pattern documentation</p>
+                <a href="text-substitution-design-pattern.html">Read →</a>
+            </div>
+            <div class="card">
+                <h3>Interpretation Verification</h3>
+                <p>Methods for verifying interpretations</p>
+                <a href="interpretation-verification.html">Read →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📥 How to Save as PDF</h2>
+        <ol>
+            <li>Click on any document above</li>
+            <li>Press <kbd>Ctrl</kbd> + <kbd>P</kbd> (or <kbd>Cmd</kbd> + <kbd>P</kbd> on Mac)</li>
+            <li>Select <strong>"Save as PDF"</strong> as destination</li>
+            <li>Click Save</li>
+        </ol>
+        <p><strong>Tip:</strong> Use landscape orientation for documents with tables or graphs.</p>
+    </div>
+
+    <footer>
+        <p>Syntra Research | <a href="https://github.com/Syntra-Env">GitHub</a> | <a href="https://zenodo.org/communities/syntra">Zenodo</a> | <a href="https://huggingface.co/Syntra-Env">HuggingFace</a></p>
+    </footer>
+</body>
+</html>
