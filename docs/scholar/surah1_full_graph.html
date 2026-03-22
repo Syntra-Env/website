@@ -1,0 +1,427 @@
+
+    <h1 style="text-align:center; color:#eee; margin:10px;">📖 Surah 1 (Al-Fatiha) - Complete Graph</h1>
+    <p style="text-align:center; color:#aaa;">
+        <b>Total Nodes:</b> 172 | <b>Total Edges:</b> 166<br>
+        <b>By Type:</b> content_address:26, holonomic:26, lemma:13, morpheme_type:26, pos:8, root:10, surah:1, verse:7, word_instance:29, word_type:26<br>
+        <small>🖱️ Scroll to zoom • Drag to pan • Hover for details • Double-click to focus</small>
+    </p>
+    <div style="background:#333; padding:10px; margin:10px; border-radius:5px; color:#ccc; font-size:12px;">
+        <b>Legend:</b> 
+        🔴 Surah | 🔵 Verse | 💧 Word | 🟢 Word Type | 🟡 Morpheme | 🟣 Root | 📝 Lemma | 🏷️ POS | 🔗 Address
+    </div>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script>function neighbourhoodHighlight(params) {
+  // console.log("in nieghbourhoodhighlight");
+  allNodes = nodes.get({ returnType: "Object" });
+  // originalNodes = JSON.parse(JSON.stringify(allNodes));
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    highlightActive = true;
+    var i, j;
+    var selectedNode = params.nodes[0];
+    var degrees = 2;
+
+    // mark all nodes as hard to read.
+    for (let nodeId in allNodes) {
+      // nodeColors[nodeId] = allNodes[nodeId].color;
+      allNodes[nodeId].color = "rgba(200,200,200,0.5)";
+      if (allNodes[nodeId].hiddenLabel === undefined) {
+        allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+    var connectedNodes = network.getConnectedNodes(selectedNode);
+    var allConnectedNodes = [];
+
+    // get the second degree nodes
+    for (i = 1; i < degrees; i++) {
+      for (j = 0; j < connectedNodes.length; j++) {
+        allConnectedNodes = allConnectedNodes.concat(
+          network.getConnectedNodes(connectedNodes[j])
+        );
+      }
+    }
+
+    // all second degree nodes get a different color and their label back
+    for (i = 0; i < allConnectedNodes.length; i++) {
+      // allNodes[allConnectedNodes[i]].color = "pink";
+      allNodes[allConnectedNodes[i]].color = "rgba(150,150,150,0.75)";
+      if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[allConnectedNodes[i]].label =
+          allNodes[allConnectedNodes[i]].hiddenLabel;
+        allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // all first degree nodes get their own color and their label back
+    for (i = 0; i < connectedNodes.length; i++) {
+      // allNodes[connectedNodes[i]].color = undefined;
+      allNodes[connectedNodes[i]].color = nodeColors[connectedNodes[i]];
+      if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[connectedNodes[i]].label =
+          allNodes[connectedNodes[i]].hiddenLabel;
+        allNodes[connectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // the main node gets its own color and its label back.
+    // allNodes[selectedNode].color = undefined;
+    allNodes[selectedNode].color = nodeColors[selectedNode];
+    if (allNodes[selectedNode].hiddenLabel !== undefined) {
+      allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
+      allNodes[selectedNode].hiddenLabel = undefined;
+    }
+  } else if (highlightActive === true) {
+    // console.log("highlightActive was true");
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      // allNodes[nodeId].color = "purple";
+      allNodes[nodeId].color = nodeColors[nodeId];
+      // delete allNodes[nodeId].color;
+      if (allNodes[nodeId].hiddenLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+        allNodes[nodeId].hiddenLabel = undefined;
+      }
+    }
+    highlightActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    // console.log("Nothing was selected");
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        // allNodes[nodeId].color = {};
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function filterHighlight(params) {
+  allNodes = nodes.get({ returnType: "Object" });
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    filterActive = true;
+    let selectedNodes = params.nodes;
+
+    // hiding all nodes and saving the label
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = true;
+      if (allNodes[nodeId].savedLabel === undefined) {
+        allNodes[nodeId].savedLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+
+    for (let i=0; i < selectedNodes.length; i++) {
+      allNodes[selectedNodes[i]].hidden = false;
+      if (allNodes[selectedNodes[i]].savedLabel !== undefined) {
+        allNodes[selectedNodes[i]].label = allNodes[selectedNodes[i]].savedLabel;
+        allNodes[selectedNodes[i]].savedLabel = undefined;
+      }
+    }
+
+  } else if (filterActive === true) {
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = false;
+      if (allNodes[nodeId].savedLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].savedLabel;
+        allNodes[nodeId].savedLabel = undefined;
+      }
+    }
+    filterActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function selectNode(nodes) {
+  network.selectNodes(nodes);
+  neighbourhoodHighlight({ nodes: nodes });
+  return nodes;
+}
+
+function selectNodes(nodes) {
+  network.selectNodes(nodes);
+  filterHighlight({nodes: nodes});
+  return nodes;
+}
+
+function highlightFilter(filter) {
+  let selectedNodes = []
+  let selectedProp = filter['property']
+  if (filter['item'] === 'node') {
+    let allNodes = nodes.get({ returnType: "Object" });
+    for (let nodeId in allNodes) {
+      if (allNodes[nodeId][selectedProp] && filter['value'].includes((allNodes[nodeId][selectedProp]).toString())) {
+        selectedNodes.push(nodeId)
+      }
+    }
+  }
+  else if (filter['item'] === 'edge'){
+    let allEdges = edges.get({returnType: 'object'});
+    // check if the selected property exists for selected edge and select the nodes connected to the edge
+    for (let edge in allEdges) {
+      if (allEdges[edge][selectedProp] && filter['value'].includes((allEdges[edge][selectedProp]).toString())) {
+        selectedNodes.push(allEdges[edge]['from'])
+        selectedNodes.push(allEdges[edge]['to'])
+      }
+    }
+  }
+  selectNodes(selectedNodes)
+}</script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+            
+            
+            
+            
+            
+
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 900px;
+                 background-color: #1a1a2e;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 900px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": "surah", "id": "surah_1", "label": "Al-Fatiha\n(\u0671\u0644\u0652\u0641\u064e\u0627\u062a\u0650\u062d\u064e\u0629)", "shape": "dot", "size": 50, "title": "Surah 1: Al-Fatiha (The Opening)"}, {"font": {"color": "white"}, "group": "verse", "id": "verse_1_1", "label": "Verse 1\n\u0628\u0650\u0633\u0652\u0645\u0650 \u0671\u0644\u0644\u0651\u064e\u0647\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0640...", "shape": "dot", "size": 25, "title": "Verse 1:1\n\n\u0628\u0650\u0633\u0652\u0645\u0650 \u0671\u0644\u0644\u0651\u064e\u0647\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0640\u0670\u0646\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650"}, {"font": {"color": "white"}, "group": "verse", "id": "verse_1_2", "label": "Verse 2\n\u0671\u0644\u0652\u062d\u064e\u0645\u0652\u062f\u064f \u0644\u0650\u0644\u0651\u064e\u0647\u0650 \u0631\u064e\u0628\u0651\u0650 \u0671...", "shape": "dot", "size": 25, "title": "Verse 1:2\n\n\u0671\u0644\u0652\u062d\u064e\u0645\u0652\u062f\u064f \u0644\u0650\u0644\u0651\u064e\u0647\u0650 \u0631\u064e\u0628\u0651\u0650 \u0671\u0644\u0652\u0639\u064e\u0640\u0670\u0644\u064e\u0645\u0650\u064a\u0646\u064e"}, {"font": {"color": "white"}, "group": "verse", "id": "verse_1_3", "label": "Verse 3\n\u0671\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0640\u0670\u0646\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650...", "shape": "dot", "size": 25, "title": "Verse 1:3\n\n\u0671\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0640\u0670\u0646\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650"}, {"font": {"color": "white"}, "group": "verse", "id": "verse_1_4", "label": "Verse 4\n\u0645\u064e\u0640\u0670\u0644\u0650\u0643\u0650 \u064a\u064e\u0648\u0652\u0645\u0650 \u0671\u0644\u062f\u0651\u0650\u064a\u0646\u0650...", "shape": "dot", "size": 25, "title": "Verse 1:4\n\n\u0645\u064e\u0640\u0670\u0644\u0650\u0643\u0650 \u064a\u064e\u0648\u0652\u0645\u0650 \u0671\u0644\u062f\u0651\u0650\u064a\u0646\u0650"}, {"font": {"color": "white"}, "group": "verse", "id": "verse_1_5", "label": "Verse 5\n\u0625\u0650\u064a\u0651\u064e\u0627\u0643\u064e \u0646\u064e\u0639\u0652\u0628\u064f\u062f\u064f \u0648\u064e\u0625\u0650\u064a\u0651\u064e...", "shape": "dot", "size": 25, "title": "Verse 1:5\n\n\u0625\u0650\u064a\u0651\u064e\u0627\u0643\u064e \u0646\u064e\u0639\u0652\u0628\u064f\u062f\u064f \u0648\u064e\u0625\u0650\u064a\u0651\u064e\u0627\u0643\u064e \u0646\u064e\u0633\u0652\u062a\u064e\u0639\u0650\u064a\u0646\u064f"}, {"font": {"color": "white"}, "group": "verse", "id": "verse_1_6", "label": "Verse 6\n\u0671\u0647\u0652\u062f\u0650\u0646\u064e\u0627 \u0671\u0644\u0635\u0651\u0650\u0631\u064e\u0670\u0637\u064e \u0671\u0644\u0652\u0645\u064f...", "shape": "dot", "size": 25, "title": "Verse 1:6\n\n\u0671\u0647\u0652\u062f\u0650\u0646\u064e\u0627 \u0671\u0644\u0635\u0651\u0650\u0631\u064e\u0670\u0637\u064e \u0671\u0644\u0652\u0645\u064f\u0633\u0652\u062a\u064e\u0642\u0650\u064a\u0645\u064e"}, {"font": {"color": "white"}, "group": "verse", "id": "verse_1_7", "label": "Verse 7\n\u0635\u0650\u0631\u064e\u0670\u0637\u064e \u0671\u0644\u0651\u064e\u0630\u0650\u064a\u0646\u064e \u0623\u064e\u0646\u0652\u0639\u064e\u0645...", "shape": "dot", "size": 25, "title": "Verse 1:7\n\n\u0635\u0650\u0631\u064e\u0670\u0637\u064e \u0671\u0644\u0651\u064e\u0630\u0650\u064a\u0646\u064e \u0623\u064e\u0646\u0652\u0639\u064e\u0645\u0652\u062a\u064e \u0639\u064e\u0644\u064e\u064a\u0652\u0647\u0650\u0645\u0652 \u063a\u064e\u064a\u0652\u0631\u0650 \u0671\u0644\u0652\u0645\u064e\u063a\u0652\u0636\u064f\u0648\u0628\u0650 \u0639\u064e\u0644\u064e\u064a\u0652\u0647\u0650\u0645\u0652 \u0648\u064e\u0644\u064e\u0627 \u0671\u0644\u0636\u0651\u064e\u0627\u0653\u0644\u0651\u0650\u064a\u0646\u064e"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:1:0", "label": "\u0628\u0633\u0645", "shape": "dot", "size": 12, "title": "Word: \u0628\u0633\u0645\nPosition: 1:0"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:1:1", "label": "\u0671\u0644\u0644\u0647", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0644\u0647\nPosition: 1:1"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:1:2", "label": "\u0671\u0644\u0631\u062d\u0645\u0640\u0646", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0631\u062d\u0645\u0640\u0646\nPosition: 1:2"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:1:3", "label": "\u0671\u0644\u0631\u062d\u064a\u0645", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0631\u062d\u064a\u0645\nPosition: 1:3"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:2:0", "label": "\u0671\u0644\u062d\u0645\u062f", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u062d\u0645\u062f\nPosition: 2:0"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:2:1", "label": "\u0644\u0644\u0647", "shape": "dot", "size": 12, "title": "Word: \u0644\u0644\u0647\nPosition: 2:1"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:2:2", "label": "\u0631\u0628", "shape": "dot", "size": 12, "title": "Word: \u0631\u0628\nPosition: 2:2"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:2:3", "label": "\u0671\u0644\u0639\u0640\u0644\u0645\u064a\u0646", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0639\u0640\u0644\u0645\u064a\u0646\nPosition: 2:3"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:3:0", "label": "\u0671\u0644\u0631\u062d\u0645\u0640\u0646", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0631\u062d\u0645\u0640\u0646\nPosition: 3:0"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:3:1", "label": "\u0671\u0644\u0631\u062d\u064a\u0645", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0631\u062d\u064a\u0645\nPosition: 3:1"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:4:0", "label": "\u0645\u0640\u0644\u0643", "shape": "dot", "size": 12, "title": "Word: \u0645\u0640\u0644\u0643\nPosition: 4:0"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:4:1", "label": "\u064a\u0648\u0645", "shape": "dot", "size": 12, "title": "Word: \u064a\u0648\u0645\nPosition: 4:1"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:4:2", "label": "\u0671\u0644\u062f\u064a\u0646", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u062f\u064a\u0646\nPosition: 4:2"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:5:0", "label": "\u0625\u064a\u0627\u0643", "shape": "dot", "size": 12, "title": "Word: \u0625\u064a\u0627\u0643\nPosition: 5:0"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:5:1", "label": "\u0646\u0639\u0628\u062f", "shape": "dot", "size": 12, "title": "Word: \u0646\u0639\u0628\u062f\nPosition: 5:1"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:5:2", "label": "\u0648\u0625\u064a\u0627\u0643", "shape": "dot", "size": 12, "title": "Word: \u0648\u0625\u064a\u0627\u0643\nPosition: 5:2"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:5:3", "label": "\u0646\u0633\u062a\u0639\u064a\u0646", "shape": "dot", "size": 12, "title": "Word: \u0646\u0633\u062a\u0639\u064a\u0646\nPosition: 5:3"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:6:0", "label": "\u0671\u0647\u062f\u0646\u0627", "shape": "dot", "size": 12, "title": "Word: \u0671\u0647\u062f\u0646\u0627\nPosition: 6:0"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:6:1", "label": "\u0671\u0644\u0635\u0631\u0637", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0635\u0631\u0637\nPosition: 6:1"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:6:2", "label": "\u0671\u0644\u0645\u0633\u062a\u0642\u064a\u0645", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0645\u0633\u062a\u0642\u064a\u0645\nPosition: 6:2"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:7:0", "label": "\u0635\u0631\u0637", "shape": "dot", "size": 12, "title": "Word: \u0635\u0631\u0637\nPosition: 7:0"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:7:1", "label": "\u0671\u0644\u0630\u064a\u0646", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0630\u064a\u0646\nPosition: 7:1"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:7:2", "label": "\u0623\u0646\u0639\u0645\u062a", "shape": "dot", "size": 12, "title": "Word: \u0623\u0646\u0639\u0645\u062a\nPosition: 7:2"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:7:3", "label": "\u0639\u0644\u064a\u0647\u0645", "shape": "dot", "size": 12, "title": "Word: \u0639\u0644\u064a\u0647\u0645\nPosition: 7:3"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:7:4", "label": "\u063a\u064a\u0631", "shape": "dot", "size": 12, "title": "Word: \u063a\u064a\u0631\nPosition: 7:4"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:7:5", "label": "\u0671\u0644\u0645\u063a\u0636\u0648\u0628", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0645\u063a\u0636\u0648\u0628\nPosition: 7:5"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:7:6", "label": "\u0639\u0644\u064a\u0647\u0645", "shape": "dot", "size": 12, "title": "Word: \u0639\u0644\u064a\u0647\u0645\nPosition: 7:6"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:7:7", "label": "\u0648\u0644\u0627", "shape": "dot", "size": 12, "title": "Word: \u0648\u0644\u0627\nPosition: 7:7"}, {"font": {"color": "white"}, "group": "word_instance", "id": "word_1:7:8", "label": "\u0671\u0644\u0636\u0627\u0644\u064a\u0646", "shape": "dot", "size": 12, "title": "Word: \u0671\u0644\u0636\u0627\u0644\u064a\u0646\nPosition: 7:8"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7451", "label": "WT:7451", "shape": "dot", "size": 15, "title": "Word Type ID: 7451\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21457", "label": "\u0628\u0650\u0633\u0652\u0645\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0628\u0650\u0633\u0652\u0645\u0650\nID: 21457\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7451", "label": "\ud83d\udd17c526db815a", "shape": "dot", "size": 8, "title": "Content Address\nc526db815aa42d1b60c91493d7c8926e9ca6cbd2f655ad7f6aa52277f338fad0"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_58", "label": "WT:58", "shape": "dot", "size": 15, "title": "Word Type ID: 58\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_244", "label": "\u0671\u0644\u0644\u0651\u064e\u0647\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u0644\u0651\u064e\u0647\u0650\nID: 244\nRoot ID: 46\nLemma ID: 6430"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_58", "label": "\ud83d\udd17bc72ea0ebb", "shape": "dot", "size": 8, "title": "Content Address\nbc72ea0ebbae092d814c038d109c89714c61c9d651097619f01e4fcec68a2aa4"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7452", "label": "WT:7452", "shape": "dot", "size": 15, "title": "Word Type ID: 7452\nInstances: 2"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21458", "label": "\u0671\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0640\u0670\u0646\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0640\u0670\u0646\u0650\nID: 21458\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7452", "label": "\ud83d\udd17648f2d79ea", "shape": "dot", "size": 8, "title": "Content Address\n648f2d79ea8c7f9a341cf57f137500eea15cf12a18833d2ed3ecd0e6a6c449bc"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7453", "label": "WT:7453", "shape": "dot", "size": 15, "title": "Word Type ID: 7453\nInstances: 2"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21459", "label": "\u0671\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650\nID: 21459\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7453", "label": "\ud83d\udd17825b7e25c5", "shape": "dot", "size": 8, "title": "Content Address\n825b7e25c5ac1004ba47d37d8a97fdd3d38182ac39c64ba339764a1ec6dccf5c"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_4293", "label": "WT:4293", "shape": "dot", "size": 15, "title": "Word Type ID: 4293\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21460", "label": "\u0671\u0644\u0652\u062d\u064e\u0645\u0652\u062f\u064f", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u0652\u062d\u064e\u0645\u0652\u062f\u064f\nID: 21460\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_4293", "label": "\ud83d\udd17c0f661cc9a", "shape": "dot", "size": 8, "title": "Content Address\nc0f661cc9a404390370f797c7d5b49419b65fd2e3568c1ea843b8f09d2bee21c"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_1383", "label": "WT:1383", "shape": "dot", "size": 15, "title": "Word Type ID: 1383\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21461", "label": "\u0644\u0650\u0644\u0651\u064e\u0647\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0644\u0650\u0644\u0651\u064e\u0647\u0650\nID: 21461\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_1383", "label": "\ud83d\udd17f7196b5bd5", "shape": "dot", "size": 8, "title": "Content Address\nf7196b5bd5102936fbe5580d4d7b446cb3d9aaa8451db2ef48c110ac1e435ab7"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_5", "label": "WT:5", "shape": "dot", "size": 15, "title": "Word Type ID: 5\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_513", "label": "\u0631\u064e\u0628\u0651\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0631\u064e\u0628\u0651\u0650\nID: 513\nRoot ID: 502\nLemma ID: 3265"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_5", "label": "\ud83d\udd17a048d6b0e5", "shape": "dot", "size": 8, "title": "Content Address\na048d6b0e56a473caddfb0a398898cfcb97868842647a61c938afba17b0e9f4b"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_1334", "label": "WT:1334", "shape": "dot", "size": 15, "title": "Word Type ID: 1334\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21462", "label": "\u0671\u0644\u0652\u0639\u064e\u0640\u0670\u0644\u064e\u0645\u0650\u064a\u0646\u064e", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u0652\u0639\u064e\u0640\u0670\u0644\u064e\u0645\u0650\u064a\u0646\u064e\nID: 21462\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_1334", "label": "\ud83d\udd1777e3f7cf69", "shape": "dot", "size": 8, "title": "Content Address\n77e3f7cf69f7a9c03c0f129a3da35767e0d1a4c0bc4658ff2258d1c7fc3e5ce1"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7454", "label": "WT:7454", "shape": "dot", "size": 15, "title": "Word Type ID: 7454\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21463", "label": "\u0645\u064e\u0640\u0670\u0644\u0650\u0643\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0645\u064e\u0640\u0670\u0644\u0650\u0643\u0650\nID: 21463\nRoot ID: 1394\nLemma ID: 5059"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7454", "label": "\ud83d\udd17506f8f0de6", "shape": "dot", "size": 8, "title": "Content Address\n506f8f0de6a0076ad5ed24edf1e82aedbc1404d13c1b8ef8e68766620d1b0c03"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_4533", "label": "WT:4533", "shape": "dot", "size": 15, "title": "Word Type ID: 4533\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_703", "label": "\u064a\u064e\u0648\u0652\u0645\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u064a\u064e\u0648\u0652\u0645\u0650\nID: 703\nRoot ID: 1643\nLemma ID: 6172"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_4533", "label": "\ud83d\udd174a64116a0d", "shape": "dot", "size": 8, "title": "Content Address\n4a64116a0d4fa67616f1b530edf80af3b9cc4c5936d18e5019ccfc0cd9e1f194"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_4534", "label": "WT:4534", "shape": "dot", "size": 15, "title": "Word Type ID: 4534\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21464", "label": "\u0671\u0644\u062f\u0651\u0650\u064a\u0646\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u062f\u0651\u0650\u064a\u0646\u0650\nID: 21464\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_4534", "label": "\ud83d\udd1731ec6317a3", "shape": "dot", "size": 8, "title": "Content Address\n31ec6317a353fe952d6b05f6740a9c4abf1005c8e7676f798762ab410ce4f57c"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7455", "label": "WT:7455", "shape": "dot", "size": 15, "title": "Word Type ID: 7455\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21465", "label": "\u0625\u0650\u064a\u0651\u064e\u0627\u0643\u064e", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0625\u0650\u064a\u0651\u064e\u0627\u0643\u064e\nID: 21465\nRoot ID: None\nLemma ID: 2173"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7455", "label": "\ud83d\udd176b5b53e5aa", "shape": "dot", "size": 8, "title": "Content Address\n6b5b53e5aaba349df7fec46e4a4f2c32dee33c9d84d97848943b2c03ddf04c4e"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7456", "label": "WT:7456", "shape": "dot", "size": 15, "title": "Word Type ID: 7456\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_1385", "label": "\u0646\u064e\u0639\u0652\u0628\u064f\u062f\u064f", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0646\u064e\u0639\u0652\u0628\u064f\u062f\u064f\nID: 1385\nRoot ID: 926\nLemma ID: 4061"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7456", "label": "\ud83d\udd17804535cb45", "shape": "dot", "size": 8, "title": "Content Address\n804535cb45e9a939935064d9cb6f45837c38772da7092801bbf43d4541e0649d"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7457", "label": "WT:7457", "shape": "dot", "size": 15, "title": "Word Type ID: 7457\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21467", "label": "\u0648\u064e\u0625\u0650\u064a\u0651\u064e\u0627\u0643\u064e", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0648\u064e\u0625\u0650\u064a\u0651\u064e\u0627\u0643\u064e\nID: 21467\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7457", "label": "\ud83d\udd17f0b0e63cdd", "shape": "dot", "size": 8, "title": "Content Address\nf0b0e63cdd4c9e06f2752fc7c28ab4b110c354ba1ef33f2fed8e662c12414624"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7458", "label": "WT:7458", "shape": "dot", "size": 15, "title": "Word Type ID: 7458\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21468", "label": "\u0646\u064e\u0633\u0652\u062a\u064e\u0639\u0650\u064a\u0646\u064f", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0646\u064e\u0633\u0652\u062a\u064e\u0639\u0650\u064a\u0646\u064f\nID: 21468\nRoot ID: 1019\nLemma ID: 6353"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7458", "label": "\ud83d\udd17d7c83874a6", "shape": "dot", "size": 8, "title": "Content Address\nd7c83874a6d0b5bba37e0b30f55c19c7d8cc27c10a929d7b6cb1be92fc42e725"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7459", "label": "WT:7459", "shape": "dot", "size": 15, "title": "Word Type ID: 7459\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21469", "label": "\u0671\u0647\u0652\u062f\u0650\u0646\u064e\u0627", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0647\u0652\u062f\u0650\u0646\u064e\u0627\nID: 21469\nRoot ID: 1526\nLemma ID: 5778"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7459", "label": "\ud83d\udd177e132d6d8b", "shape": "dot", "size": 8, "title": "Content Address\n7e132d6d8b51e5a5bfc7ae9459c0aca30be25304073ea492aefb0ba46bc3c92a"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7460", "label": "WT:7460", "shape": "dot", "size": 15, "title": "Word Type ID: 7460\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21470", "label": "\u0671\u0644\u0635\u0651\u0650\u0631\u064e\u0670\u0637\u064e", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u0635\u0651\u0650\u0631\u064e\u0670\u0637\u064e\nID: 21470\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7460", "label": "\ud83d\udd17822a770125", "shape": "dot", "size": 8, "title": "Content Address\n822a77012593d7ef730118f8efcdfb366043b8c04811bd32f7858847581d09ac"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7461", "label": "WT:7461", "shape": "dot", "size": 15, "title": "Word Type ID: 7461\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21471", "label": "\u0671\u0644\u0652\u0645\u064f\u0633\u0652\u062a\u064e\u0642\u0650\u064a\u0645\u064e", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u0652\u0645\u064f\u0633\u0652\u062a\u064e\u0642\u0650\u064a\u0645\u064e\nID: 21471\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7461", "label": "\ud83d\udd17bca9f1462a", "shape": "dot", "size": 8, "title": "Content Address\nbca9f1462a2a6fdd4b385bc8a0da4456477f7ccd5d7ab9223f356fa1280892df"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7462", "label": "WT:7462", "shape": "dot", "size": 15, "title": "Word Type ID: 7462\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21472", "label": "\u0635\u0650\u0631\u064e\u0670\u0637\u064e", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0635\u0650\u0631\u064e\u0670\u0637\u064e\nID: 21472\nRoot ID: 814\nLemma ID: 3877"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7462", "label": "\ud83d\udd17ff92da4f68", "shape": "dot", "size": 8, "title": "Content Address\nff92da4f68fb4a134be053e0dbd2cb1f4f2c1d09b0f0e6cc22867ae4d0a2da5b"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_38", "label": "WT:38", "shape": "dot", "size": 15, "title": "Word Type ID: 38\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_23", "label": "\u0671\u0644\u0651\u064e\u0630\u0650\u064a\u0646\u064e", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u0651\u064e\u0630\u0650\u064a\u0646\u064e\nID: 23\nRoot ID: None\nLemma ID: 6433"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_38", "label": "\ud83d\udd177da4d9b2b6", "shape": "dot", "size": 8, "title": "Content Address\n7da4d9b2b640838bba68730f761076f4a1c34385e9694d8a0ee8017ecf943258"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7463", "label": "WT:7463", "shape": "dot", "size": 15, "title": "Word Type ID: 7463\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21473", "label": "\u0623\u064e\u0646\u0652\u0639\u064e\u0645\u0652\u062a\u064e", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0623\u064e\u0646\u0652\u0639\u064e\u0645\u0652\u062a\u064e\nID: 21473\nRoot ID: 1471\nLemma ID: 2017"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7463", "label": "\ud83d\udd17f7097ac01d", "shape": "dot", "size": 8, "title": "Content Address\nf7097ac01d4bf734c08f95252b18839e1b003625c7ce304af978aad726a8bd26"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_1176", "label": "WT:1176", "shape": "dot", "size": 15, "title": "Word Type ID: 1176\nInstances: 2"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21474", "label": "\u0639\u064e\u0644\u064e\u064a\u0652\u0647\u0650\u0645\u0652", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0639\u064e\u0644\u064e\u064a\u0652\u0647\u0650\u0645\u0652\nID: 21474\nRoot ID: None\nLemma ID: 4150"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_1176", "label": "\ud83d\udd17c51512df27", "shape": "dot", "size": 8, "title": "Content Address\nc51512df274eb4cb222f0fbc8fe2f7b21b22abd3b44af35953a494af87b338e4"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_200", "label": "WT:200", "shape": "dot", "size": 15, "title": "Word Type ID: 200\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_692", "label": "\u063a\u064e\u064a\u0652\u0631\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u063a\u064e\u064a\u0652\u0631\u0650\nID: 692\nRoot ID: 1073\nLemma ID: 4310"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_200", "label": "\ud83d\udd17150e56a74e", "shape": "dot", "size": 8, "title": "Content Address\n150e56a74ea53b0f9d369e1d082a68a834b914406f48f69f56e4c381471ab7b3"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7465", "label": "WT:7465", "shape": "dot", "size": 15, "title": "Word Type ID: 7465\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21475", "label": "\u0671\u0644\u0652\u0645\u064e\u063a\u0652\u0636\u064f\u0648\u0628\u0650", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u0652\u0645\u064e\u063a\u0652\u0636\u064f\u0648\u0628\u0650\nID: 21475\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7465", "label": "\ud83d\udd178dc7b0f2cb", "shape": "dot", "size": 8, "title": "Content Address\n8dc7b0f2cbafa8215a7a1629f370b72fb14e68f92f066d2a610cc602e5ca3477"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_1201", "label": "WT:1201", "shape": "dot", "size": 15, "title": "Word Type ID: 1201\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21477", "label": "\u0648\u064e\u0644\u064e\u0627", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0648\u064e\u0644\u064e\u0627\nID: 21477\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_1201", "label": "\ud83d\udd178233dc5aac", "shape": "dot", "size": 8, "title": "Content Address\n8233dc5aac29866e055e846c800a54020762b9796c7971fdc5cc1d7feea2ad51"}, {"font": {"color": "white"}, "group": "word_type", "id": "word_type_7467", "label": "WT:7467", "shape": "dot", "size": 15, "title": "Word Type ID: 7467\nInstances: 1"}, {"font": {"color": "white"}, "group": "morpheme_type", "id": "morpheme_type_21478", "label": "\u0671\u0644\u0636\u0651\u064e\u0627\u0653\u0644\u0651\u0650\u064a\u0646\u064e", "shape": "dot", "size": 12, "title": "Morpheme Type: \u0671\u0644\u0636\u0651\u064e\u0627\u0653\u0644\u0651\u0650\u064a\u0646\u064e\nID: 21478\nRoot ID: None\nLemma ID: None"}, {"font": {"color": "white"}, "group": "content_address", "id": "ca_word_type_7467", "label": "\ud83d\udd17e879971dcd", "shape": "dot", "size": 8, "title": "Content Address\ne879971dcdee1261ad21ba9c4a0a89036d4eb7f7d695ddc0b6d97931dec4a732"}, {"font": {"color": "white"}, "group": "root", "id": "root_502", "label": "\ud83d\udcd6 \u0631\u0628\u0628", "shape": "dot", "size": 20, "title": "Root: None\nArabic: \u0631\u0628\u0628\nID: 502"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_3265", "label": "\ud83d\udcdd \u0631\u064e\u0628\u0651", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 3265"}, {"font": {"color": "white"}, "group": "pos", "id": "pos_6477", "label": "\ud83c\udff7\ufe0f Noun", "shape": "dot", "size": 15, "title": "POS: Noun\nID: 6477"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_6433", "label": "\ud83d\udcdd \u0671\u0644\u0651\u064e\u0630\u0650\u0649", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 6433"}, {"font": {"color": "white"}, "group": "pos", "id": "pos_6483", "label": "\ud83c\udff7\ufe0f Relative pronou", "shape": "dot", "size": 15, "title": "POS: Relative pronoun\nID: 6483"}, {"font": {"color": "white"}, "group": "root", "id": "root_46", "label": "\ud83d\udcd6 \u0627\u0644\u0647", "shape": "dot", "size": 20, "title": "Root: None\nArabic: \u0627\u0644\u0647\nID: 46"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_6430", "label": "\ud83d\udcdd \u0671\u0644\u0644\u0651\u064e\u0647", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 6430"}, {"font": {"color": "white"}, "group": "pos", "id": "pos_6478", "label": "\ud83c\udff7\ufe0f Proper noun", "shape": "dot", "size": 15, "title": "POS: Proper noun\nID: 6478"}, {"font": {"color": "white"}, "group": "root", "id": "root_1073", "label": "\ud83d\udcd6 \u063a\u064a\u0631", "shape": "dot", "size": 20, "title": "Root: None\nArabic: \u063a\u064a\u0631\nID: 1073"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_4310", "label": "\ud83d\udcdd \u063a\u064e\u064a\u0652\u0631", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 4310"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_4150", "label": "\ud83d\udcdd \u0639\u064e\u0644\u064e\u0649\u0670", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 4150"}, {"font": {"color": "white"}, "group": "pos", "id": "pos_6487", "label": "\ud83c\udff7\ufe0f Preposition", "shape": "dot", "size": 15, "title": "POS: Preposition\nID: 6487"}, {"font": {"color": "white"}, "group": "pos", "id": "pos_6491", "label": "\ud83c\udff7\ufe0f Coordinating co", "shape": "dot", "size": 15, "title": "POS: Coordinating conjunction\nID: 6491"}, {"font": {"color": "white"}, "group": "pos", "id": "pos_6521", "label": "\ud83c\udff7\ufe0f Determiner", "shape": "dot", "size": 15, "title": "POS: Determiner\nID: 6521"}, {"font": {"color": "white"}, "group": "root", "id": "root_1643", "label": "\ud83d\udcd6 \u064a\u0648\u0645", "shape": "dot", "size": 20, "title": "Root: None\nArabic: \u064a\u0648\u0645\nID: 1643"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_6172", "label": "\ud83d\udcdd \u064a\u064e\u0648\u0652\u0645", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 6172"}, {"font": {"color": "white"}, "group": "root", "id": "root_1394", "label": "\ud83d\udcd6 \u0645\u0644\u0643", "shape": "dot", "size": 20, "title": "Root: None\nArabic: \u0645\u0644\u0643\nID: 1394"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_5059", "label": "\ud83d\udcdd \u0645\u064e\u0670\u0644\u0650\u0643", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 5059"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_2173", "label": "\ud83d\udcdd \u0625\u0650\u064a\u0651\u064e\u0627", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 2173"}, {"font": {"color": "white"}, "group": "pos", "id": "pos_6481", "label": "\ud83c\udff7\ufe0f Personal pronou", "shape": "dot", "size": 15, "title": "POS: Personal pronoun\nID: 6481"}, {"font": {"color": "white"}, "group": "root", "id": "root_926", "label": "\ud83d\udcd6 \u0639\u0628\u062f", "shape": "dot", "size": 20, "title": "Root: None\nArabic: \u0639\u0628\u062f\nID: 926"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_4061", "label": "\ud83d\udcdd \u0639\u064e\u0628\u064e\u062f\u064e", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 4061"}, {"font": {"color": "white"}, "group": "pos", "id": "pos_6486", "label": "\ud83c\udff7\ufe0f Verb", "shape": "dot", "size": 15, "title": "POS: Verb\nID: 6486"}, {"font": {"color": "white"}, "group": "root", "id": "root_1019", "label": "\ud83d\udcd6 \u0639\u0648\u0646", "shape": "dot", "size": 20, "title": "Root: None\nArabic: \u0639\u0648\u0646\nID: 1019"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_6353", "label": "\ud83d\udcdd \u0671\u0633\u0652\u062a\u064e\u0639\u0650\u064a\u0646\u064f", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 6353"}, {"font": {"color": "white"}, "group": "root", "id": "root_1526", "label": "\ud83d\udcd6 \u0647\u062f\u064a", "shape": "dot", "size": 20, "title": "Root: None\nArabic: \u0647\u062f\u064a\nID: 1526"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_5778", "label": "\ud83d\udcdd \u0647\u064e\u062f\u064e\u0649", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 5778"}, {"font": {"color": "white"}, "group": "root", "id": "root_814", "label": "\ud83d\udcd6 \u0635\u0631\u0637", "shape": "dot", "size": 20, "title": "Root: None\nArabic: \u0635\u0631\u0637\nID: 814"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_3877", "label": "\ud83d\udcdd \u0635\u0650\u0631\u064e\u0670\u0637", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 3877"}, {"font": {"color": "white"}, "group": "root", "id": "root_1471", "label": "\ud83d\udcd6 \u0646\u0639\u0645", "shape": "dot", "size": 20, "title": "Root: None\nArabic: \u0646\u0639\u0645\nID: 1471"}, {"font": {"color": "white"}, "group": "lemma", "id": "lemma_2017", "label": "\ud83d\udcdd \u0623\u064e\u0646\u0652\u0639\u064e\u0645\u064e", "shape": "dot", "size": 15, "title": "Lemma: None\nID: 2017"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_e1dc493253544e64f9b8", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nSurah 15 \u0628\u0634\u0631 vs \u0625\u0646\u0633\u0627\u0646 distinction: 15:26 creates \u0625\u0646\u0633\u0627\u0646 (generic humanity, the forgetting category), but 15:28-29 creates \u0628\u0634\u0631 \u2014 the human rendered into receiver-status whom angels are commanded to pros"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_feb5334ed179b1f87196", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nThe word \u0644\u064e\u0648\u064e\u0627\u0642\u0650\u062d\u064e (lawaqiH - pollination/fertilization) from root \u0644-\u0642-\u062d in 15:22 connects to Surah 16 (An-Nahl/The Bee) which describes bees pollinating. However, in 15:22 the pollination is done by "}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_2dc66deac10a4ff4100e", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nSurah 15 \u0628\u0634\u0631 vs \u0625\u0646\u0633\u0627\u0646 distinction: 15:26 creates \u0625\u0646\u0633\u0627\u0646 (generic humanity, the forgetting category), but 15:28-29 creates \u0628\u0634\u0631 \u2014 the human rendered into receiver-status whom angels are commanded to pros"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_a19448107c4a25e88d82", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nSurah 15 \u0628\u0634\u0631 vs \u0625\u0646\u0633\u0627\u0646 distinction: 15:26 creates \u0625\u0646\u0633\u0627\u0646 (generic humanity, the forgetting category), but 15:28-29 creates \u0628\u0634\u0631 \u2014 the human rendered into receiver-status whom angels are commanded to pros"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_9af79de5596322bade15", "label": "\ud83d\udca1rejected", "shape": "dot", "size": 12, "title": "Phase: rejected\nCategory: quranic_research\n\nPresent tense verbs in Quranic narrative\n\nInterpretation: Present tense (imperfective aspect) verbs often indicate ongoing or eternal truths rather than past historical events\n\nLinguistic features: {\""}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_7f4697382eea6f290b0b", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nAl-Fatihah) - Theme: Opening prayer and seeking guidance\n\nDescription: Al-Fatihah serves as an opening prayer that establishes the believer\u0027s relationship with Allah"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_0f2c66f3fb71a2c95f5a", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nSurah 15 \u0628\u0634\u0631 vs \u0625\u0646\u0633\u0627\u0646 distinction: 15:26 creates \u0625\u0646\u0633\u0627\u0646 (generic humanity, the forgetting category), but 15:28-29 creates \u0628\u0634\u0631 \u2014 the human rendered into receiver-status whom angels are commanded to pros"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_53df2ffd5d9a0852b943", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nThe word \u0644\u064e\u0648\u064e\u0627\u0642\u0650\u062d\u064e (lawaqiH - pollination/fertilization) from root \u0644-\u0642-\u062d in 15:22 connects to Surah 16 (An-Nahl/The Bee) which describes bees pollinating. However, in 15:22 the pollination is done by "}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_e6fef4280c1c368a474a", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nSurah 15 describes a respite period (~1400 years) during which deeper Quranic knowledge was deliberately blocked (shihab mechanism 15:17-18). The \"appointed time\" (\u064a\u064e\u0648\u0652\u0645 \u0627\u0644\u0652\u0648\u064e\u0642\u0652\u062a\u0650 \u0627\u0644\u0652\u0645\u064e\u0639\u0652\u0644\u064f\u0648\u0645) has now"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_2d02319c42c86503f280", "label": "\ud83d\udca1question", "shape": "dot", "size": 12, "title": "Phase: question\nCategory: quranic_research\n\nWhy was the knowledge being blocked? This is a fundamental question about Surah 15\u0027s narrative. The blocking (shihab mechanism) was deliberate - but why?"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_423dff9732fc562d84c4", "label": "\ud83d\udca1question", "shape": "dot", "size": 12, "title": "Phase: question\nCategory: quranic_research\n\nOBSERVATION: Surah 15 narrative has parallels with Surah An-Naml (27) in its multi-dimensional storytelling approach. Both surahs contain layered narratives that operate on multiple levels simultaneou"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_ab19090ca5693095069b", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nSurah 12 (Yusuf) establishes bashar (receiver) vs malak (transmitter) distinction based on communication directionality. Surah 15 (Al-Hijr) discusses insan and bashar in context of malaikah dynamics, "}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_1545f8c31529ad774675", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nIn Surah 15, Ibrahim is complaining SENT on behalf of the \u0636\u064e\u064a\u0652\u0641 (dayf), who is \u063a\u064f\u0644\u064e\u0627\u0645\u064c \u0639\u064e\u0644\u0650\u064a\u0645\u064c (ghulaam 3aliim) - the FUTURE RASOOL. The dayf is SINGULAR because the emissaries (malaikah) are like pro"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_8c0038b2bc348f2bb874", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\n\u063a\u064f\u0644\u064e\u0627\u0645\u064c \u0639\u064e\u0644\u0650\u064a\u0645\u064c (ghulaam 3aliim) = Future Rasool. The emissaries in Surah 15 are not independent actors but proxies/representatives acting on behalf of this singular \u0636\u064e\u064a\u0652\u0641 (guest). This explains why d"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_b68a89cc6bd53b6fa6f9", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nIn Surah 15, Ibrahim is complaining SENT on behalf of the \u0636\u064e\u064a\u0652\u0641 (dayf/guest), who is \u063a\u064f\u0644\u064e\u0627\u0645\u064c \u0639\u064e\u0644\u0650\u064a\u0645\u064c (ghulaam 3aliim) - the FUTURE RASOOL. The dayf is SINGULAR because the emissaries (malaikah) are pr"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_f7a4d76f6bbd766e830c", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nCOMPREHENSIVE: Ibrahim\u0027s complaint in Surah 15 is SENT on behalf of the \u0636\u064e\u064a\u0652\u0641 (dayf/guest) = \u063a\u064f\u0644\u064e\u0627\u0645\u064c \u0639\u064e\u0644\u0650\u064a\u0645\u064c (ghulaam 3aliim) = the FUTURE RASOOL. The malaikah/emissaries are PLURAL but the dayf is SI"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_3a2620c22cacdb56f930", "label": "\ud83d\udca1validati", "shape": "dot", "size": 12, "title": "Phase: validation\nCategory: methodology\n\nSurah 17:8-10 exhibits the exact same distant reference structure as 10:7-10. Ayah 17:8 addresses Bani Israel regarding their rejection scenario. Ayah 17:9 creates a structural break by departing to a"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_32c68794b8f8b3e5849a", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nLINGUISTIC: Root \u0633-\u0643-\u0631 (s-k-r) in 15:15 and 15:72 - same semantic field. 15:15 uses passive verb \u0633\u064f\u0643\u0650\u0651\u0631\u064e\u062a\u0652 (\"has been made to block/intoxicate\") describing the state of those whose perception is impai"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_ae378342c72ab2eff269", "label": "\ud83d\udca1validati", "shape": "dot", "size": 12, "title": "Phase: validation\nCategory: quranic_research\n\nLINGUISTIC: Root \u0633-\u0643-\u0631 (s-k-r) in 15:15 and 15:72 - same semantic field. 15:15 uses passive verb \u0633\u064f\u0643\u0650\u0651\u0631\u064e\u062a\u0652 (\"has been made to block/intoxicate\") describing the state of those whose perception is impai"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_8f96f7f4d4f0a861db8f", "label": "\ud83d\udca1validati", "shape": "dot", "size": 12, "title": "Phase: validation\nCategory: quranic_research\n\nLINGUISTIC: Root \u0633-\u0643-\u0631 (s-k-r) in 15:15 and 15:72 - same semantic field. 15:15 uses passive verb \u0633\u064f\u0643\u0650\u0651\u0631\u064e\u062a\u0652 (\"has been made to block/intoxicate\") describing the state of those whose perception is impai"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_570da940b89d3fd372e0", "label": "\ud83d\udca1validati", "shape": "dot", "size": 12, "title": "Phase: validation\nCategory: quranic_research\n\nLINGUISTIC: Root \u0633-\u0643-\u0631 (s-k-r) in 15:15 and 15:72 - same semantic field. 15:15 uses passive verb \u0633\u064f\u0643\u0650\u0651\u0631\u064e\u062a\u0652 (\"has been made to block/intoxicate\") describing the state of those whose perception is impai"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_b127ec5e666589066b88", "label": "\ud83d\udca1validati", "shape": "dot", "size": 12, "title": "Phase: validation\nCategory: quranic_research\n\nLINGUISTIC: Root \u0633-\u0643-\u0631 (s-k-r) in 15:15 and 15:72 - same semantic field. 15:15 uses passive verb \u0633\u064f\u0643\u0650\u0651\u0631\u064e\u062a\u0652 (\"has been made to block/intoxicate\") describing the state of those whose perception is impai"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_ed67e5a440873d0a12ef", "label": "\ud83d\udca1validati", "shape": "dot", "size": 12, "title": "Phase: validation\nCategory: quranic_research\n\nLINGUISTIC: Root \u0633-\u0643-\u0631 (s-k-r) in 15:15 and 15:72 - same semantic field. 15:15 uses passive verb \u0633\u064f\u0643\u0650\u0651\u0631\u064e\u062a\u0652 (\"has been made to block/intoxicate\") describing the state of those whose perception is impai"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_535b1bbc4abff509d62a", "label": "\ud83d\udca1hypothes", "shape": "dot", "size": 12, "title": "Phase: hypothesis\nCategory: quranic_research\n\nSYNTHESIS: Surah 15:19-27 meta-narrative of Creation and Cognition. The NCU (earth) is a stabilized field (rawasiya) where balanced (mawzun) knowledge is metered out from treasures (khazain). The insa"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_46bc000be48be44f9e76", "label": "\ud83d\udca1verified", "shape": "dot", "size": 12, "title": "Phase: verified\nCategory: cosmology\n\n**The Rebellion Manifold** - Characters like Iblis (15:31), Pharaoh (79:22), and the Transgressor (96:7) are linked by a shared High-Curvature profile (R_uv \u003e 0.9). They occupy the same \u0027Tension Slot\u0027"}, {"font": {"color": "white"}, "group": "holonomic", "id": "holonomic_6874ccad7a3ffad5d93c", "label": "\ud83d\udca1question", "shape": "dot", "size": 12, "title": "Phase: question\nCategory: general\n\n**The Rebellion Manifold** - Multi-location analysis."}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "surah_1", "to": "verse_1_1", "width": 1}, {"arrows": "to", "from": "surah_1", "to": "verse_1_2", "width": 1}, {"arrows": "to", "from": "surah_1", "to": "verse_1_3", "width": 1}, {"arrows": "to", "from": "surah_1", "to": "verse_1_4", "width": 1}, {"arrows": "to", "from": "surah_1", "to": "verse_1_5", "width": 1}, {"arrows": "to", "from": "surah_1", "to": "verse_1_6", "width": 1}, {"arrows": "to", "from": "surah_1", "to": "verse_1_7", "width": 1}, {"arrows": "to", "from": "verse_1_1", "to": "word_1:1:0", "width": 1}, {"arrows": "to", "from": "verse_1_1", "to": "word_1:1:1", "width": 1}, {"arrows": "to", "from": "verse_1_1", "to": "word_1:1:2", "width": 1}, {"arrows": "to", "from": "verse_1_1", "to": "word_1:1:3", "width": 1}, {"arrows": "to", "from": "verse_1_2", "to": "word_1:2:0", "width": 1}, {"arrows": "to", "from": "verse_1_2", "to": "word_1:2:1", "width": 1}, {"arrows": "to", "from": "verse_1_2", "to": "word_1:2:2", "width": 1}, {"arrows": "to", "from": "verse_1_2", "to": "word_1:2:3", "width": 1}, {"arrows": "to", "from": "verse_1_3", "to": "word_1:3:0", "width": 1}, {"arrows": "to", "from": "verse_1_3", "to": "word_1:3:1", "width": 1}, {"arrows": "to", "from": "verse_1_4", "to": "word_1:4:0", "width": 1}, {"arrows": "to", "from": "verse_1_4", "to": "word_1:4:1", "width": 1}, {"arrows": "to", "from": "verse_1_4", "to": "word_1:4:2", "width": 1}, {"arrows": "to", "from": "verse_1_5", "to": "word_1:5:0", "width": 1}, {"arrows": "to", "from": "verse_1_5", "to": "word_1:5:1", "width": 1}, {"arrows": "to", "from": "verse_1_5", "to": "word_1:5:2", "width": 1}, {"arrows": "to", "from": "verse_1_5", "to": "word_1:5:3", "width": 1}, {"arrows": "to", "from": "verse_1_6", "to": "word_1:6:0", "width": 1}, {"arrows": "to", "from": "verse_1_6", "to": "word_1:6:1", "width": 1}, {"arrows": "to", "from": "verse_1_6", "to": "word_1:6:2", "width": 1}, {"arrows": "to", "from": "verse_1_7", "to": "word_1:7:0", "width": 1}, {"arrows": "to", "from": "verse_1_7", "to": "word_1:7:1", "width": 1}, {"arrows": "to", "from": "verse_1_7", "to": "word_1:7:2", "width": 1}, {"arrows": "to", "from": "verse_1_7", "to": "word_1:7:3", "width": 1}, {"arrows": "to", "from": "verse_1_7", "to": "word_1:7:4", "width": 1}, {"arrows": "to", "from": "verse_1_7", "to": "word_1:7:5", "width": 1}, {"arrows": "to", "from": "verse_1_7", "to": "word_1:7:6", "width": 1}, {"arrows": "to", "from": "verse_1_7", "to": "word_1:7:7", "width": 1}, {"arrows": "to", "from": "verse_1_7", "to": "word_1:7:8", "width": 1}, {"arrows": "to", "from": "word_type_7451", "to": "word_1:1:0", "width": 1}, {"arrows": "to", "from": "word_type_7451", "to": "morpheme_type_21457", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7451", "to": "ca_word_type_7451", "width": 1}, {"arrows": "to", "from": "word_type_58", "to": "word_1:1:1", "width": 1}, {"arrows": "to", "from": "word_type_58", "to": "morpheme_type_244", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_58", "to": "ca_word_type_58", "width": 1}, {"arrows": "to", "from": "word_type_7452", "to": "word_1:1:2", "width": 1}, {"arrows": "to", "from": "word_type_7452", "to": "word_1:3:0", "width": 1}, {"arrows": "to", "from": "word_type_7452", "to": "morpheme_type_21458", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7452", "to": "ca_word_type_7452", "width": 1}, {"arrows": "to", "from": "word_type_7453", "to": "word_1:1:3", "width": 1}, {"arrows": "to", "from": "word_type_7453", "to": "word_1:3:1", "width": 1}, {"arrows": "to", "from": "word_type_7453", "to": "morpheme_type_21459", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7453", "to": "ca_word_type_7453", "width": 1}, {"arrows": "to", "from": "word_type_4293", "to": "word_1:2:0", "width": 1}, {"arrows": "to", "from": "word_type_4293", "to": "morpheme_type_21460", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_4293", "to": "ca_word_type_4293", "width": 1}, {"arrows": "to", "from": "word_type_1383", "to": "word_1:2:1", "width": 1}, {"arrows": "to", "from": "word_type_1383", "to": "morpheme_type_21461", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_1383", "to": "ca_word_type_1383", "width": 1}, {"arrows": "to", "from": "word_type_5", "to": "word_1:2:2", "width": 1}, {"arrows": "to", "from": "word_type_5", "to": "morpheme_type_513", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_5", "to": "ca_word_type_5", "width": 1}, {"arrows": "to", "from": "word_type_1334", "to": "word_1:2:3", "width": 1}, {"arrows": "to", "from": "word_type_1334", "to": "morpheme_type_21462", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_1334", "to": "ca_word_type_1334", "width": 1}, {"arrows": "to", "from": "word_type_7454", "to": "word_1:4:0", "width": 1}, {"arrows": "to", "from": "word_type_7454", "to": "morpheme_type_21463", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7454", "to": "ca_word_type_7454", "width": 1}, {"arrows": "to", "from": "word_type_4533", "to": "word_1:4:1", "width": 1}, {"arrows": "to", "from": "word_type_4533", "to": "morpheme_type_703", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_4533", "to": "ca_word_type_4533", "width": 1}, {"arrows": "to", "from": "word_type_4534", "to": "word_1:4:2", "width": 1}, {"arrows": "to", "from": "word_type_4534", "to": "morpheme_type_21464", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_4534", "to": "ca_word_type_4534", "width": 1}, {"arrows": "to", "from": "word_type_7455", "to": "word_1:5:0", "width": 1}, {"arrows": "to", "from": "word_type_7455", "to": "morpheme_type_21465", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7455", "to": "ca_word_type_7455", "width": 1}, {"arrows": "to", "from": "word_type_7456", "to": "word_1:5:1", "width": 1}, {"arrows": "to", "from": "word_type_7456", "to": "morpheme_type_1385", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7456", "to": "ca_word_type_7456", "width": 1}, {"arrows": "to", "from": "word_type_7457", "to": "word_1:5:2", "width": 1}, {"arrows": "to", "from": "word_type_7457", "to": "morpheme_type_21467", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7457", "to": "ca_word_type_7457", "width": 1}, {"arrows": "to", "from": "word_type_7458", "to": "word_1:5:3", "width": 1}, {"arrows": "to", "from": "word_type_7458", "to": "morpheme_type_21468", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7458", "to": "ca_word_type_7458", "width": 1}, {"arrows": "to", "from": "word_type_7459", "to": "word_1:6:0", "width": 1}, {"arrows": "to", "from": "word_type_7459", "to": "morpheme_type_21469", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7459", "to": "ca_word_type_7459", "width": 1}, {"arrows": "to", "from": "word_type_7460", "to": "word_1:6:1", "width": 1}, {"arrows": "to", "from": "word_type_7460", "to": "morpheme_type_21470", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7460", "to": "ca_word_type_7460", "width": 1}, {"arrows": "to", "from": "word_type_7461", "to": "word_1:6:2", "width": 1}, {"arrows": "to", "from": "word_type_7461", "to": "morpheme_type_21471", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7461", "to": "ca_word_type_7461", "width": 1}, {"arrows": "to", "from": "word_type_7462", "to": "word_1:7:0", "width": 1}, {"arrows": "to", "from": "word_type_7462", "to": "morpheme_type_21472", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7462", "to": "ca_word_type_7462", "width": 1}, {"arrows": "to", "from": "word_type_38", "to": "word_1:7:1", "width": 1}, {"arrows": "to", "from": "word_type_38", "to": "morpheme_type_23", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_38", "to": "ca_word_type_38", "width": 1}, {"arrows": "to", "from": "word_type_7463", "to": "word_1:7:2", "width": 1}, {"arrows": "to", "from": "word_type_7463", "to": "morpheme_type_21473", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7463", "to": "ca_word_type_7463", "width": 1}, {"arrows": "to", "from": "word_type_1176", "to": "word_1:7:3", "width": 1}, {"arrows": "to", "from": "word_type_1176", "to": "word_1:7:6", "width": 1}, {"arrows": "to", "from": "word_type_1176", "to": "morpheme_type_21474", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_1176", "to": "ca_word_type_1176", "width": 1}, {"arrows": "to", "from": "word_type_200", "to": "word_1:7:4", "width": 1}, {"arrows": "to", "from": "word_type_200", "to": "morpheme_type_692", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_200", "to": "ca_word_type_200", "width": 1}, {"arrows": "to", "from": "word_type_7465", "to": "word_1:7:5", "width": 1}, {"arrows": "to", "from": "word_type_7465", "to": "morpheme_type_21475", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7465", "to": "ca_word_type_7465", "width": 1}, {"arrows": "to", "from": "word_type_1201", "to": "word_1:7:7", "width": 1}, {"arrows": "to", "from": "word_type_1201", "to": "morpheme_type_21477", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_1201", "to": "ca_word_type_1201", "width": 1}, {"arrows": "to", "from": "word_type_7467", "to": "word_1:7:8", "width": 1}, {"arrows": "to", "from": "word_type_7467", "to": "morpheme_type_21478", "width": 1}, {"arrows": "to", "color": "#F7DC6F", "from": "word_type_7467", "to": "ca_word_type_7467", "width": 1}, {"arrows": "to", "color": "#DDA0DD", "from": "morpheme_type_513", "to": "root_502", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_513", "to": "lemma_3265", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_513", "to": "pos_6477", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_23", "to": "lemma_6433", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_23", "to": "pos_6483", "width": 1}, {"arrows": "to", "color": "#DDA0DD", "from": "morpheme_type_244", "to": "root_46", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_244", "to": "lemma_6430", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_244", "to": "pos_6478", "width": 1}, {"arrows": "to", "color": "#DDA0DD", "from": "morpheme_type_692", "to": "root_1073", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_692", "to": "lemma_4310", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_692", "to": "pos_6477", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_21474", "to": "lemma_4150", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21474", "to": "pos_6487", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21477", "to": "pos_6491", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21462", "to": "pos_6521", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21461", "to": "pos_6487", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21460", "to": "pos_6521", "width": 1}, {"arrows": "to", "color": "#DDA0DD", "from": "morpheme_type_703", "to": "root_1643", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_703", "to": "lemma_6172", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_703", "to": "pos_6477", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21464", "to": "pos_6521", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21457", "to": "pos_6487", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21458", "to": "pos_6521", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21459", "to": "pos_6521", "width": 1}, {"arrows": "to", "color": "#DDA0DD", "from": "morpheme_type_21463", "to": "root_1394", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_21463", "to": "lemma_5059", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21463", "to": "pos_6477", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_21465", "to": "lemma_2173", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21465", "to": "pos_6481", "width": 1}, {"arrows": "to", "color": "#DDA0DD", "from": "morpheme_type_1385", "to": "root_926", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_1385", "to": "lemma_4061", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_1385", "to": "pos_6486", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21467", "to": "pos_6491", "width": 1}, {"arrows": "to", "color": "#DDA0DD", "from": "morpheme_type_21468", "to": "root_1019", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_21468", "to": "lemma_6353", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21468", "to": "pos_6486", "width": 1}, {"arrows": "to", "color": "#DDA0DD", "from": "morpheme_type_21469", "to": "root_1526", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_21469", "to": "lemma_5778", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21469", "to": "pos_6486", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21470", "to": "pos_6521", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21471", "to": "pos_6521", "width": 1}, {"arrows": "to", "color": "#DDA0DD", "from": "morpheme_type_21472", "to": "root_814", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_21472", "to": "lemma_3877", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21472", "to": "pos_6477", "width": 1}, {"arrows": "to", "color": "#DDA0DD", "from": "morpheme_type_21473", "to": "root_1471", "width": 1}, {"arrows": "to", "color": "#87CEEB", "from": "morpheme_type_21473", "to": "lemma_2017", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21473", "to": "pos_6486", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21475", "to": "pos_6521", "width": 1}, {"arrows": "to", "color": "#F0E68C", "from": "morpheme_type_21478", "to": "pos_6521", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"borderWidth": 2, "borderWidthSelected": 4, "font": {"size": 12, "face": "arial"}}, "edges": {"color": {"inherit": "both"}, "smooth": {"type": "continuous"}}, "physics": {"forceAtlas2Based": {"gravitationalConstant": -150, "centralGravity": 0.005, "springLength": 80, "springConstant": 0.05}, "minVelocity": 0.75, "solver": "forceAtlas2Based"}, "interaction": {"hover": true, "navigationButtons": true, "keyboard": {"enabled": true}, "tooltipDelay": 50}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
