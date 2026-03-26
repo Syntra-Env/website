@@ -6,16 +6,16 @@
 <title>Quran DSL</title>
 </head>
 <body>
-<h1>Quran DSL</h1>
+<h1 id="s1">1. Quran DSL</h1>
 
 <p>Domain-specific language and interface specifications for Quranic analysis.</p>
 
-<h2>Core Concepts</h2>
+<h2 id="s2">2. Core Concepts</h2>
 
-<h3>References</h3>
+<h3 id="s2-1">2.1. References</h3>
 <p>Quranic references use the format <code>surah:ayah</code> (e.g., <code>1:1</code> for Al-Fatiha verse 1).</p>
 
-<h3>Layers</h3>
+<h3 id="s2-2">2.2. Layers</h3>
 <p>The verse text can be explored through different linguistic layers:</p>
 <ul>
 <li><strong>Text</strong> - Raw Arabic text</li>
@@ -26,9 +26,9 @@
 <li><strong>Dependency</strong> - Syntactic relations</li>
 </ul>
 
-<h2>Data Structures</h2>
+<h2 id="s3">3. Data Structures</h2>
 
-<h3>Verse Response</h3>
+<h3 id="s3-1">3.1. Verse Response</h3>
 <code>
 GET /api/verse/{surah}/{ayah}
 </code>
@@ -56,7 +56,7 @@ GET /api/verse/{surah}/{ayah}
   ]
 }</code></pre>
 
-<h3>Morphology Response</h3>
+<h3 id="s3-2">3.2. Morphology Response</h3>
 <code>
 GET /api/morphology/{surah}/{ayah}
 </code>
@@ -83,7 +83,7 @@ GET /api/morphology/{surah}/{ayah}
   ]
 }</code></pre>
 
-<h3>Dependency Response</h3>
+<h3 id="s3-3">3.3. Dependency Response</h3>
 <code>
 GET /api/dependency/{surah}/{ayah}
 </code>
@@ -99,7 +99,7 @@ GET /api/dependency/{surah}/{ayah}
   ]
 }</code></pre>
 
-<h2>Invariants</h2>
+<h2 id="s4">4. Invariants</h2>
 <ul>
 <li><code>surah >= 1</code>, <code>ayah >= 1</code></li>
 <li><code>tokens[*].segments</code> may be empty but must be present</li>
@@ -107,11 +107,11 @@ GET /api/dependency/{surah}/{ayah}
 <li>Dependency entries should include <code>rel_label</code> and <code>word</code></li>
 </ul>
 
-<h2>Command Interface</h2>
+<h2 id="s5">5. Command Interface</h2>
 
 <p>Minimal algebraic-style laws for CLI behavior. Each command is modeled as a function on <code>(state, output)</code> where <code>state = { current_verse }</code>.</p>
 
-<h3>Commands</h3>
+<h3 id="s5-1">5.1. Commands</h3>
 <ul>
 <li><code>clear</code>: <code>state' = state</code>, <code>output' = ∅</code></li>
 <li><code>see chapter n</code>: <code>state'.current_verse = verse(n,1)</code>, <code>output' = render(surah n)</code></li>
@@ -121,28 +121,28 @@ GET /api/dependency/{surah}/{ayah}
 <li><code>layer next|prev</code>: Navigate between layers</li>
 </ul>
 
-<h3>Rendering Invariants</h3>
+<h3 id="s5-2">5.2. Rendering Invariants</h3>
 <ul>
 <li><code>render(verse)</code> always includes <code>surah:ayah</code> and token forms/text</li>
 <li>If morphology is available, includes root | pos | type | form for each segment</li>
 <li>Dependency render lists relation → word (and POS when present)</li>
 </ul>
 
-<h2>Search Interface</h2>
+<h2 id="s6">6. Search Interface</h2>
 
-<h3>Surah Search</h3>
+<h3 id="s6-1">6.1. Surah Search</h3>
 <p>Type the number of the surah to list all its ayat.</p>
 
-<h3>Ayah Search</h3>
+<h3 id="s6-2">6.2. Ayah Search</h3>
 <p>Type the surah and ayah numbers separated by a colon. For example, <code>36:1</code> displays the first ayah of Surah Ya-Seen.</p>
 
-<h3>Syntactic Pattern Search</h3>
+<h3 id="s6-3">6.3. Syntactic Pattern Search</h3>
 <p>Search ayat matching specific syntactic structures.</p>
 
-<h3>Morphological Pattern Search</h3>
+<h3 id="s6-4">6.4. Morphological Pattern Search</h3>
 <p>Search ayat matching morphological patterns (e.g., فَعِيل, مُفَعِّل).</p>
 
-<h3>Root Word Search</h3>
+<h3 id="s6-5">6.5. Root Word Search</h3>
 <p>Search ayat containing a specific triliteral root:</p>
 <p><code>root [radical1] [radical2] [radical3]</code></p>
 <p>Radicals use transliterations:</p>
@@ -177,15 +177,15 @@ GET /api/dependency/{surah}/{ayah}
 <li>ي = ya</li>
 </ul>
 
-<h3>Phonological Pattern Search</h3>
+<h3 id="s6-6">6.6. Phonological Pattern Search</h3>
 <p>Identify similar-sounding words with different orthographies.</p>
 
-<h3>Stylistic Pattern Search</h3>
+<h3 id="s6-7">6.7. Stylistic Pattern Search</h3>
 <p>Define words once; their definitions appear wherever the word is used. Undefined words show as blank boxes or Arabic text.</p>
 <p>For example, defining "bismi" in 1:1 as 'in the symbolism of' renders:</p>
 <p><code>[in the symbolism of] [allah] [ar-rahman] [ar-raheem]</code></p>
 
-<h2>Imagination and Prayer</h2>
+<h2 id="s7">7. Imagination and Prayer</h2>
 
 <p>Imagination is not mere fiction but a conversation with the unseen. When one visualizes interaction with others, imagination functions as presence, not illusion. This insight extends to prayer: the right duʿāʾ shapes the right reality.</p>
 
@@ -193,18 +193,18 @@ GET /api/dependency/{surah}/{ayah}
 
 <p>Between thought and event lies the imaginal: the living bridge where prayer takes form, where what is spoken in sincerity becomes what is lived in truth.</p>
 
-<h3>Breath</h3>
+<h3 id="s7-1">7.1. Breath</h3>
 <p>The Quran research app embodies the rhythm of the <strong>nafs</strong>—the self that breathes, learns, and releases. Study is a living cycle of <strong>inhale and exhale</strong>: inhalation of tension and grasping marks temporary movement away from Allah; exhalation softens, remembers, and returns to alignment with Truth.</p>
 
-<h3>Situational Awareness</h3>
+<h3 id="s7-2">7.2. Situational Awareness</h3>
 <p>True living requires balance among past, present, and future. One must know how awareness is spent throughout time and who one might become—so clearly that one can speak to past and future self.</p>
 <p>There are many pasts and many futures—not poetically, but epistemically.</p>
 
-<h2>Honest Reporting</h2>
+<h2 id="s8">8. Honest Reporting</h2>
 
 <p>If one does not honestly report conscious experience accurately, they harm those who depend on accurate reporting to shape their reality. It may have been better not to have anyone depend on one's truth, but what others do is not in one's hands.</p>
 
-<h2>Usage</h2>
+<h2 id="s9">9. Usage</h2>
 <p>These contracts serve as acceptance criteria for tests and future refinements. Use when creating fixtures and validating responses.</p>
 
 </body>

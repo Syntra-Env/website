@@ -4,19 +4,19 @@ Research documents on mathematical frameworks, theological interpretation system
 
 ## Research
 
-- [Kalima Mathematical Framework](Kalima%20Mathematical%20Framework.html)
-- [Limits of the Mathematics](Limits%20of%20the%20Mathematics.html)
-- [Organic Quranic Methodology](METHODOLOGY.html)
-- [Literature Review: Quranic Arabic NLP & ML](literature_review_quran_arabic_nlp_ml.html)
-- [Open Questions](open-questions.html)
+- [Organic Quranic Methodology](research/methodology.html)
+- [Kalima Mathematical Framework](research/math-framework.html)
+- [Limits of the Mathematics](research/math-limits.html)
+- [Literature Review: Quranic Arabic NLP & ML](research/literature-review.html)
+- [Open Questions](research/open-questions.html)
 
 ## Technical
 
-- [Architecture](architecture.html)
-- [Quran DSL](quran-dsl.html)
-- [Testing](testing.html)
+- [Architecture](technical/architecture.html)
+- [Quran DSL](technical/quran-dsl.html)
+- [Testing](technical/testing.html)
 
 ## Meta
 
-- [Resources](bookmarks.html)
-- [Changelog](changelog.html)
+- [Resources](meta/resources.html)
+- [Changelog](meta/changelog.html)

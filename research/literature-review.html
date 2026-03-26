@@ -6,40 +6,35 @@
 <title>Literature Review: Quranic Arabic NLP & ML</title>
 </head>
 <body>
-<h1>Literature Review: Quranic Arabic NLP & ML</h1>
+<h1 id="s1">1. Literature Review: Quranic Arabic NLP & ML</h1>
 
 <p class="subtitle">Computational approaches to the Quranic text — corpora, linguistic annotation, morphological analysis, NLP tasks, large language models, recitation analysis, and the broader Arabic NLP landscape.</p>
 
-<h2>Table of Contents</h2>
-<ol class="toc">
-<li><a href="#s1">1. Introduction</a></li>
-<li><a href="#s2">2. Foundational Challenges</a>
-  <ol>
-    <li><a href="#s2-1">2.1 Morphological Complexity</a></li>
-    <li><a href="#s2-2">2.2 Diacritics and Orthography</a></li>
-    <li><a href="#s2-3">2.3 Semantic Ambiguity</a></li>
-    <li><a href="#s2-4">2.4 Annotated Data Scarcity</a></li>
-  </ol>
-</li>
-<li><a href="#s3">3. Corpora and Annotated Datasets</a></li>
-<li><a href="#s4">4. Morphological Segmentation</a></li>
-<li><a href="#s5">5. Part-of-Speech Tagging</a></li>
-<li><a href="#s6">6. Named Entity Recognition</a></li>
-<li><a href="#s7">7. Quranic Question Answering</a></li>
-<li><a href="#s8">8. Information Retrieval</a></li>
-<li><a href="#s9">9. Tafsir and Classical Commentary</a></li>
-<li><a href="#s10">10. Text Summarization</a></li>
-<li><a href="#s11">11. Machine Translation</a></li>
-<li><a href="#s12">12. Recitation and Tajweed</a></li>
-<li><a href="#s13">13. Large Language Models</a></li>
-<li><a href="#s14">14. Digital Infrastructure</a></li>
-<li><a href="#s15">15. Open Problems</a></li>
-<li><a href="#s16">16. Formal Framework for Computational Falsifiability</a></li>
-<li><a href="#s17">17. Summary Table</a></li>
+<nav class="toc">
+<h2 id="s0-toc">0. Table of Contents</h2>
+<ol>
+<li><a href="#s2">2. Introduction</a></li>
+<li><a href="#s3">3. Foundational Challenges</a></li>
+<li><a href="#s4">4. Corpora and Annotated Datasets</a></li>
+<li><a href="#s5">5. Morphological Segmentation</a></li>
+<li><a href="#s6">6. Part-of-Speech Tagging</a></li>
+<li><a href="#s7">7. Named Entity Recognition</a></li>
+<li><a href="#s8">8. Quranic Question Answering</a></li>
+<li><a href="#s9">9. Information Retrieval</a></li>
+<li><a href="#s10">10. Tafsir and Classical Commentary</a></li>
+<li><a href="#s11">11. Text Summarization</a></li>
+<li><a href="#s12">12. Machine Translation</a></li>
+<li><a href="#s13">13. Recitation and Tajweed</a></li>
+<li><a href="#s14">14. Large Language Models</a></li>
+<li><a href="#s15">15. Digital Infrastructure</a></li>
+<li><a href="#s16">16. Open Problems</a></li>
+<li><a href="#s17">17. Formal Framework for Computational Falsifiability</a></li>
+<li><a href="#s18">18. Summary Table</a></li>
 <li><a href="#refs">References</a></li>
 </ol>
+</nav>
 
-<h2 id="s1">1. Introduction</h2>
+<h2 id="s2">2. Introduction</h2>
 <p>The Quran presents a singular challenge and opportunity for computational linguistics. As a fixed, closed corpus of approximately 77,430 words across 6,236 verses and 114 surahs, it offers a bounded domain for rigorous annotation and analysis. Yet its language — Classical Quranic Arabic (CQA) — differs substantially from Modern Standard Arabic (MSA) and from the dialectal Arabic on which most contemporary NLP systems are trained. The morphological density of Arabic (where a single token may encode root, pattern, derivation, case, definiteness, and pronominal suffixes) amplifies these challenges significantly.</p>
 
 <p>This review frames these computational techniques not as ends in themselves, but as tools in service of a rigorous, systematic methodology for Quranic interpretation. This methodology rests on three pillars:</p>
@@ -51,24 +46,24 @@
 
 <p>Research in this domain has accelerated since roughly 2008, driven by the release of the Quranic Arabic Corpus, the digitization of classical tafsir literature, and the emergence of transformer-based language models.</p>
 
-<h2 id="s2">2. Foundational Challenges in Quranic Computational Linguistics</h2>
+<h2 id="s3">3. Foundational Challenges in Quranic Computational Linguistics</h2>
 
-<h3 id="s2-1">2.1 Morphological Complexity</h3>
+<h3 id="s3-1">3.1. Morphological Complexity</h3>
 <p>Classical Quranic Arabic (CQA) exemplifies the challenge of non-concatenative, templatic morphology. Words are derived by interleaving a consonantal <strong>root</strong> (typically triliteral, e.g., ʿ-l-m, "to know") into a vocalic <strong>pattern</strong> that specifies grammatical and semantic information. For example, from ʿ-l-m, the Quran derives ʿalīm (All-Knowing), ʿālim (one who knows), muʿallim (teacher), and ʿilm (knowledge).</p>
 <p>This templatic derivation is then combined with concatenative affixation. A single orthographic word in the Quran can correspond to a full clause in English. The word fasayakfīkahumu (فَسَيَكْفِيكَهُمُ, Q2:137) is a canonical example, segmenting into five morphemes: fa- (so), sa- (will), yakfī- (He will suffice), -ka (you), and -humu (them).</p>
 <p>Formally, the generation of a surface form can be modeled as:</p>
 <span class="eq">Word = Affix<sub>pre</sub> + Pattern(Root) + Affix<sub>suf</sub></span>
 
-<h3 id="s2-2">2.2 Diacritics and Orthography</h3>
+<h3 id="s3-2">3.2. Diacritics and Orthography</h3>
 <p>While modern Arabic texts typically omit short vowel diacritics, creating ambiguity, the Quran is unique in that its diacritization is canonical and part of the revealed text. The Uthmanic rasm, the script in which the Quran is written, is fully vocalized.</p>
 <p>The primary challenge is not missing diacritics, but the existence of multiple, systematic, and rule-governed sets of readings (Qirāʾāt), such as Hafs and Warsh. These authorized recitation traditions introduce variations in vowels and sometimes consonants, which must be modeled as a systematic transformation of the base rasm, not as noise.</p>
 
-<h3 id="s2-3">2.3 Semantic Ambiguity</h3>
+<h3 id="s3-3">3.3. Semantic Ambiguity</h3>
 <p>The primary ambiguity in the Quran is not orthographic but semantic, stemming from polysemy. Many key Quranic terms have a wide semantic field that can only be disambiguated by context. For instance, the word rūḥ (روح) can refer to the angel Gabriel (Q16:102), divine inspiration or revelation (Q42:52), or the human soul/spirit (Q17:85).</p>
 <p>The ambiguity of a word w with a set of possible senses S can be quantified by its Shannon entropy:</p>
 <span class="eq">H(w|C) = - Σ P(s<sub>i</sub>|w, C) log<sub>2</sub> P(s<sub>i</sub>|w, C)</span>
 
-<h3 id="s2-4">2.4 Annotated Data Scarcity</h3>
+<h3 id="s3-4">3.4. Annotated Data Scarcity</h3>
 <p>While the Quranic text itself is a finite, closed corpus, the key bottleneck for CQA is the scarcity of large-scale, high-quality annotated data for complex downstream tasks. Resources lacking include:</p>
 <ul>
 <li><strong>Semantic Roles:</strong> Who did what to whom for every predicate.</li>
@@ -77,37 +72,37 @@
 <li><strong>Named Entity Normalization:</strong> Linking every entity mention to a canonical identifier.</li>
 </ul>
 
-<h2 id="s3">3. Corpora and Annotated Datasets</h2>
+<h2 id="s4">4. Corpora and Annotated Datasets</h2>
 
-<h3>3.1 The Quranic Arabic Corpus</h3>
+<h3 id="s4-1">4.1. The Quranic Arabic Corpus</h3>
 <p>The foundational resource is the <strong>Quranic Arabic Corpus</strong> (<a href="https://corpus.quran.com">corpus.quran.com</a>), developed by Kais Dukes at the University of Leeds. The corpus provides word-by-word morphological annotation for the entire Quran, encoding part-of-speech tags, lemmas, roots, and syntactic dependency relations. Each token is annotated with up to fourteen morphological features. The project is open-source and represents the baseline against which nearly all subsequent annotation work is measured.</p>
 <p>A successor effort, <strong>QuranMorph</strong> (arXiv:2506.18148), revisits the morphological layer with updated annotation guidelines.</p>
 
-<h3>3.2 Treebank and Syntactic Datasets</h3>
+<h3 id="s4-2">4.2. Treebank and Syntactic Datasets</h3>
 <p><strong>MASAQ</strong> (Morphologically and Syntactically-Annotated Quran) extends morphological annotation with full syntactic parse trees. A complementary dataset adds a complete dependency annotation layer compatible with Universal Dependencies conventions.</p>
 <p>The most architecturally ambitious treebank effort is <strong>Noor</strong> (Nashir et al., 2025, IEEE Access) — a full pipeline framework for Classical Arabic parsing that introduces the Quranic Treebank, described as "the first complete, validated, and fully machine-readable hybrid syntactic resource for Classical Arabic."</p>
 
-<h3>3.3 Question Answering Corpora</h3>
+<h3 id="s4-3">4.3. Question Answering Corpora</h3>
 <ul>
 <li><strong>Qur'an QA 2022</strong> — first systematic benchmark for reading comprehension in Classical Arabic.</li>
 <li><strong>HAQA and QUQA</strong> (RANLP 2023) — parallel QA corpora for both Quran and Hadith.</li>
 <li><strong>islamAndAi/QURAN-NLP</strong> — aggregates Quran text, translations, hadith, and tafaseer.</li>
 </ul>
 
-<h3>3.4 Audio and Recitation Datasets</h3>
+<h3 id="s4-4">4.4. Audio and Recitation Datasets</h3>
 <p>The <strong>Quranic Audio Dataset</strong> (arXiv:2405.02675) provides aligned audio-text pairs across multiple reciters, enabling ASR, reciter identification, and tajweed violation detection.</p>
 <p>The <strong>Tajweed Dataset</strong> (Kaggle) provides labeled examples of tajweed rules at the character and phoneme level.</p>
 
-<h2 id="s4">4. Morphological Segmentation and Root Extraction</h2>
+<h2 id="s5">5. Morphological Segmentation and Root Extraction</h2>
 <p>Morphological segmentation is the foundational task for Quranic NLP, as a single orthographic token can contain multiple morphemes including proclitics, the definite article, a stem, and pronominal enclitics.</p>
 <p>For example, the token wa-bi-l-kitābi (وبِالْكِتَابِ, "and in the book") must be segmented into wa- (and), bi- (in), al- (the), and the stem kitāb (book).</p>
 <p>Standard toolkits include <strong>MADAMIRA</strong> (Pasha et al., 2014) and <strong>CAMeL Tools</strong> (Obeid et al., 2020), though these require fine-tuning for CQA's unique lexicon and morphology.</p>
 
-<h2 id="s5">5. Part-of-Speech Tagging</h2>
+<h2 id="s6">6. Part-of-Speech Tagging</h2>
 <p>For Quranic Arabic, Part-of-Speech (POS) tagging is inextricably linked to morphological segmentation. The <strong>Quranic Arabic Corpus</strong> introduced a hierarchical tagset distinguishing coordinating conjunctions (CONJ), prepositions (P), definite articles (DET), verbs (V), nouns (N), and numerous subclasses.</p>
 <p>A fully tagged token like wa-l-masjidi would be represented as morpheme-POS pairs: (wa-, CONJ) + (l-, DET) + (masjidi, N).</p>
 
-<h2 id="s6">6. Named Entity Recognition</h2>
+<h2 id="s7">7. Named Entity Recognition</h2>
 <p>Named Entity Recognition (NER) in the Quran involves identifying mentions of specific entities such as persons, locations, nations, and sacred concepts. This is more challenging than in modern texts because Arabic lacks capitalization, and many proper names are derived from common word roots.</p>
 <p>Key entity types include:</p>
 <ul>
@@ -118,46 +113,46 @@
 </ul>
 <p>State-of-the-art approaches use transformer models like <strong>CAMeLBERT-CA</strong> fine-tuned on datasets like TafsirDataset.</p>
 
-<h2 id="s7">7. Quranic Question Answering</h2>
+<h2 id="s8">8. Quranic Question Answering</h2>
 <p>Question Answering (QA) over the Quranic text directly supports the pillar of <strong>Plausibility</strong>. By attempting to find direct textual answers to questions derived from an interpretation, a QA system can help assess whether the interpretation is plausible.</p>
 <p>Research has shifted towards using LLMs for Quranic QA, using retrieval-augmented generation (RAG) frameworks where a retriever first finds relevant verses, which are then fed to the LLM as context.</p>
 
-<h2 id="s8">8. Information Retrieval and Semantic Search</h2>
+<h2 id="s9">9. Information Retrieval and Semantic Search</h2>
 <p>Information Retrieval (IR) and semantic search are the primary tools for the pillar of <strong>Verification</strong>. A robust search engine allows an interpreter to systematically look for confirming, contradictory, or related passages.</p>
 
-<h3>8.1 Alfanous</h3>
+<h3 id="s9-1">9.1. Alfanous</h3>
 <p><strong>Alfanous</strong> is the most mature open-source Quranic search engine, implementing morphological normalization, root-based indexing, and transliteration handling.</p>
 
-<h3>8.2 Embedding-Based Retrieval</h3>
+<h3 id="s9-2">9.2. Embedding-Based Retrieval</h3>
 <p><strong>QuranGPT</strong> applies GPT-4 embeddings to all Quranic verses, enabling semantic similarity search beyond keyword matching. Vector-based approaches can uncover thematically related passages even if they do not share keywords.</p>
 
-<h2 id="s9">9. Tafsir, NLP, and Classical Commentary</h2>
+<h2 id="s10">10. Tafsir, NLP, and Classical Commentary</h2>
 <p><strong>Tafsir</strong> (exegesis) represents the richest body of classical Quranic scholarship and is central to the pillars of <strong>Verification</strong> and <strong>Continuous Falsifiability</strong>. By processing this vast corpus, NLP tools enable an interpretation to be cross-verified against centuries of scholarly work.</p>
 <p>The <strong>Tafsir API</strong> aggregates major classical tafsirs — Ibn Kathir, al-Tabari, al-Jalalayn, al-Qurtubi — in machine-readable form.</p>
 <p><strong>Corpus Coranicum</strong> (<a href="https://corpuscoranicum.de">corpuscoranicum.de</a>) is the primary scholarly digital humanities project for historical-critical Quranic studies.</p>
 
-<h2 id="s10">10. Text Summarization</h2>
+<h2 id="s11">11. Text Summarization</h2>
 <p>Arabic text summarization spans extractive (graph-based, statistical) and abstractive (neural, LLM-based) approaches. For Quranic NLP, summarization is most directly relevant to tafsir processing.</p>
 <p>The <strong>ROUGE</strong> metric is standard for evaluation, though <strong>LEMMA-ROUGE</strong> has been proposed specifically suited to morphologically complex Arabic evaluation.</p>
 
-<h2 id="s11">11. Machine Translation of the Quran</h2>
+<h2 id="s12">12. Machine Translation of the Quran</h2>
 <p>Machine Translation (MT) of the Quran is a task where theological and linguistic precision are paramount. Unlike translating contemporary news articles, translating the Quran involves navigating complex rhetorical structures, deep polysemy, and subtle morphological distinctions.</p>
 <p>Modern NMT systems, especially those based on large Arabic-centric models like <strong>ALLaM</strong> (Bari et al., 2024), offer much higher fluency. However, evaluating their adequacy for Quranic translation requires human evaluation by experts.</p>
 
-<h2 id="s12">12. Recitation, Tajweed, and Speech Processing</h2>
+<h2 id="s13">13. Recitation, Tajweed, and Speech Processing</h2>
 <p><strong>Tajweed</strong> constitutes a formal phonological system governing the pronunciation of every phoneme in context. The <code>cpfair/quran-tajweed</code> dataset provides character-level tajweed annotations.</p>
 <p>The <strong>Quranic Audio Dataset</strong> enables ASR evaluation on recited Quranic speech, which differs from conversational Arabic in its precise diction, fixed vocabulary, and systematic phonological rules.</p>
 
-<h2 id="s13">13. Large Language Models for Arabic and Quranic NLP</h2>
+<h2 id="s14">14. Large Language Models for Arabic and Quranic NLP</h2>
 
-<h3>13.1 Encoder Models (BERT-family)</h3>
+<h3 id="s14-1">14.1. Encoder Models (BERT-family)</h3>
 <ul>
 <li><strong>AraBERT</strong> — first Arabic BERT pre-trained on Arabic news.</li>
 <li><strong>ARBERT and MARBERT</strong> — MSA-focused and multi-dialectal BERT models.</li>
 <li><strong>CAMeLBERT</strong> — family of Arabic BERT variants pre-trained on different Arabic varieties; the Classical Arabic variant is most directly relevant to Quranic text processing.</li>
 </ul>
 
-<h3>13.2 Large Generative Arabic LLMs</h3>
+<h3 id="s14-2">14.2. Large Generative Arabic LLMs</h3>
 <ul>
 <li><strong>ALLaM</strong> (Bari et al., 2024) — large Arabic-English bilingual LLM from SDAIA/NCAI Saudi Arabia.</li>
 <li><strong>Jais / Jais-chat</strong> (Sengupta et al., 2023) — Arabic-centric open generative LLM from G42 UAE.</li>
@@ -165,14 +160,14 @@
 <li><strong>Peacock</strong> (Alwajih et al., 2024) — Arabic multimodal LLM family.</li>
 </ul>
 
-<h3>13.3 Evaluation and Benchmarking</h3>
+<h3 id="s14-3">14.3. Evaluation and Benchmarking</h3>
 <ul>
 <li><strong>BALSAM</strong> — comprehensive Arabic LLM benchmarking platform.</li>
 <li><strong>AL-QASIDA</strong> — LLM quality in dialectal Arabic.</li>
 <li><strong>AraTrust</strong> — trustworthiness evaluation for Arabic LLMs.</li>
 </ul>
 
-<h3>13.4 Implications for Quranic NLP</h3>
+<h3 id="s14-4">14.4. Implications for Quranic NLP</h3>
 <p>Within the interpretive methodology of this review, the most promising directions are:</p>
 <ol>
 <li><strong>CAMeLBERT-CLA</strong> for classical Arabic encoding tasks (morphology, POS, NER).</li>
@@ -181,16 +176,16 @@
 <li><strong>CQA-specific pre-training</strong> using Quran, tafsir, and hadith corpora.</li>
 </ol>
 
-<h2 id="s14">14. Digital Infrastructure and Community</h2>
+<h2 id="s15">15. Digital Infrastructure and Community</h2>
 
-<h3>14.1 APIs and Application Platforms</h3>
+<h3 id="s15-1">15.1. APIs and Application Platforms</h3>
 <ul>
 <li><strong>Quran.com</strong> — primary public-facing infrastructure.</li>
 <li><strong>fawazahmed0/quran-api</strong> — 400+ translations, 90+ languages.</li>
 <li><strong>Al Quran Cloud</strong> (<a href="https://alquran.cloud">alquran.cloud</a>) — multi-edition API.</li>
 </ul>
 
-<h3>14.2 Community and Organizations</h3>
+<h3 id="s15-2">15.2. Community and Organizations</h3>
 <ul>
 <li><strong>SIGARAB</strong> — Special Interest Group on Arabic NLP.</li>
 <li><strong>OpenITI</strong> — Open Islamicate Texts Initiative.</li>
@@ -198,7 +193,7 @@
 <li><strong>IQSA</strong> — International Qur'anic Studies Association.</li>
 </ul>
 
-<h2 id="s15">15. Open Problems and Research Gaps</h2>
+<h2 id="s16">16. Open Problems and Research Gaps</h2>
 
 <p><strong>Classical Arabic pre-training data scarcity:</strong> The Quran (~77k words) is too small to pre-train a transformer from scratch. A dedicated CQA pre-trained language model at production scale does not yet exist.</p>
 
@@ -212,13 +207,13 @@
 
 <p><strong>MSA-to-Classical transfer learning:</strong> The analogous MSA-to-Classical Arabic transfer learning problem needs systematic study.</p>
 
-<h2 id="s16">16. Formal Framework for Computational Falsifiability</h2>
+<h2 id="s17">17. Formal Framework for Computational Falsifiability</h2>
 
 <p>A computational interpretation I is falsifiable if and only if there exists a potential observation O such that:</p>
 <span class="eq">Falsifiable(I) ≡ ∃O : [P(O|I) &lt; τ] ∧ [P(O|¬I) &gt; τ]</span>
 <p>where τ is a falsifiability threshold (typically 0.05).</p>
 
-<h3>16.1 Operational Metrics</h3>
+<h3 id="s17-1">17.1. Operational Metrics</h3>
 
 <p><strong>Contradiction Score (CS):</strong> Measures direct textual contradictions using semantic entailment.</p>
 
@@ -226,12 +221,12 @@
 
 <p><strong>Interpretive Stability (IS):</strong> Measures robustness against minor perturbations in textual evidence.</p>
 
-<h3>16.2 Decision Threshold</h3>
+<h3 id="s17-2">17.2. Decision Threshold</h3>
 <p>An interpretation I is provisionally accepted if:</p>
 <span class="eq">F(I) = (1 - CS(I)) / (1 + AD(I)) × IS(I) &gt; θ</span>
 <p>where θ is an acceptance threshold (empirically set to 0.7).</p>
 
-<h3>16.3 Implementation Workflow</h3>
+<h3 id="s17-3">17.3. Implementation Workflow</h3>
 <ol>
 <li><strong>Formalization:</strong> Express interpretation I as a set of verifiable claims.</li>
 <li><strong>Evidence Gathering:</strong> Retrieve supporting verses and counter-evidence.</li>
@@ -240,7 +235,7 @@
 <li><strong>Iterative Refinement:</strong> If F(I) &lt; θ, identify weakest claims and refine interpretation.</li>
 </ol>
 
-<h2 id="s17">17. Summary Table</h2>
+<h2 id="s18">18. Summary Table</h2>
 <table>
 <thead>
 <tr>
@@ -269,12 +264,12 @@
 
 <h2 id="refs">References</h2>
 
-<h3>Primary Arabic NLP Survey</h3>
+<h3 id="refs-1">References: Primary Arabic NLP Survey</h3>
 <ul>
 <li>Alayba, A.M. (2025). Arabic Natural Language Processing (NLP): A Comprehensive Review. <em>Computers</em>, 14(11), 497.</li>
 </ul>
 
-<h3>Quranic-Specific Papers</h3>
+<h3 id="refs-2">References: Quranic-Specific Papers</h3>
 <ul>
 <li>Dukes, K. et al. The Quranic Arabic Corpus. corpus.quran.com.</li>
 <li>QuranMorph Corpus. arXiv:2506.18148.</li>
@@ -286,13 +281,13 @@
 <li>Ahmed, S. et al. (2022). TafsirDataset: A Novel Multi-Task Benchmark. COLING 2022.</li>
 </ul>
 
-<h3>Arabic NLP Tools</h3>
+<h3 id="refs-3">References: Arabic NLP Tools</h3>
 <ul>
 <li>Pasha, A. et al. (2014). MADAMIRA. LREC 2014.</li>
 <li>Obeid, O. et al. (2020). CAMeL Tools. LREC 2020.</li>
 </ul>
 
-<h3>Arabic Pre-trained Language Models</h3>
+<h3 id="refs-4">References: Arabic Pre-trained Language Models</h3>
 <ul>
 <li>Antoun, W.; Baly, F.; Hajj, H. (2020). AraBERT. 4th Workshop Open-Source Arabic Corpora.</li>
 <li>Abdul-Mageed, M. et al. (2021). ARBERT & MARBERT. ACL 2021.</li>
@@ -301,7 +296,7 @@
 <li>Sengupta, N. et al. (2023). Jais and Jais-chat. arXiv:2308.16149.</li>
 </ul>
 
-<h3>Key Open-Source Repositories</h3>
+<h3 id="refs-5">References: Key Open-Source Repositories</h3>
 <ul>
 <li><code>TarteelAI/quranic-universal-library</code></li>
 <li><code>kaisdukes/quranic-corpus</code></li>
