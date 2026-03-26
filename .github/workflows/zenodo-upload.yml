@@ -3,10 +3,9 @@ name: Upload to Zenodo (Draft)
 on:
   push:
     branches: [master]
-    paths-ignore:
-      - '.github/**'
-      - 'README.md'
-      - 'index.html'
+    paths:
+      - '**.html'
+      - '**.css'
   workflow_dispatch:
     inputs:
       force_new_version:
@@ -31,6 +30,23 @@ jobs:
           ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
           ZENODO_SANDBOX: ${{ secrets.ZENODO_SANDBOX }}
         run: |
+          set -e
+          
+          retry() {
+            local n=1
+            local max=3
+            local delay=5
+            while [ $n -le $max ]; do
+              "$@" && return 0 || {
+                echo "Attempt $n/$max failed: $?"
+                [ $n -lt $max ] && sleep $delay
+                n=$((n+1))
+              }
+            done
+            echo "Command failed after $max attempts"
+            return 1
+          }
+          
           # Determine Zenodo URL
           if [ "$ZENODO_SANDBOX" = "true" ]; then
             ZENODO_URL="https://sandbox.zenodo.org"
@@ -40,27 +56,38 @@ jobs:
           
           echo "Using Zenodo: $ZENODO_URL"
           
+          # Function to create deposit
+          create_deposit() {
+            curl -s -X POST -H "Authorization: Bearer $ZENODO_TOKEN" \
+              "$ZENODO_URL/api/deposit/depositions"
+          }
+          
+          # Function to check deposit status
+          check_deposit() {
+            curl -s -H "Authorization: Bearer $ZENODO_TOKEN" \
+              "$ZENODO_URL/api/deposit/depositions/$1"
+          }
+          
           # Get or create deposit
           if [ -f "${{ env.ZENODO_DEPOSIT_FILE }}" ] && [ "${{ github.event.inputs.force_new_version }}" != "true" ]; then
             DEPOSIT_ID=$(cat "${{ env.ZENODO_DEPOSIT_FILE }}")
             echo "Using existing deposit: $DEPOSIT_ID"
             
-            STATUS_RESPONSE=$(curl -s -H "Authorization: Bearer $ZENODO_TOKEN" \
-              "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID")
+            STATUS_RESPONSE=$(check_deposit "$DEPOSIT_ID")
             echo "Status Response: $STATUS_RESPONSE"
             STATUS=$(echo "$STATUS_RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('state','unsubmitted'))")
             
             if [ "$STATUS" = "done" ]; then
               echo "Deposit is published, creating new version..."
-              NEW_VERSION=$(curl -s -X POST -H "Authorization: Bearer $ZENODO_TOKEN" \
-                "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/actions/newversion")
-              DEPOSIT_ID=$(echo "$NEW_VERSION" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
+              retry curl -s -X POST -H "Authorization: Bearer $ZENODO_TOKEN" \
+                "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/actions/newversion" > /dev/null
+              NEW_VERSION=$(check_deposit "$DEPOSIT_ID" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('links',{}).get('latest_draft','NO_LINK'))")
+              DEPOSIT_ID=$(echo "$NEW_VERSION" | grep -o '[0-9]\+' | tail -1)
               echo "New version ID: $DEPOSIT_ID"
             fi
           else
             echo "Creating new deposit..."
-            NEW_DEP=$(curl -s -X POST -H "Authorization: Bearer $ZENODO_TOKEN" \
-              "$ZENODO_URL/api/deposit/depositions")
+            NEW_DEP=$(retry create_deposit)
             echo "API Response: $NEW_DEP"
             DEPOSIT_ID=$(echo "$NEW_DEP" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('id', d.get('error', 'NO_ID')))")
             if [ "$DEPOSIT_ID" = "NO_ID" ]; then
@@ -73,16 +100,17 @@ jobs:
           
           # Clear existing files
           echo "Clearing old files..."
-          curl -s -H "Authorization: Bearer $ZENODO_TOKEN" \
+          FILE_IDS=$(curl -s -H "Authorization: Bearer $ZENODO_TOKEN" \
             "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/files" | \
-            python3 -c "import sys,json; [print(f['id']) for f in json.load(sys.stdin)]" | \
-            while read FILE_ID; do
-              curl -s -X DELETE -H "Authorization: Bearer $ZENODO_TOKEN" \
-                "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/files/$FILE_ID"
-            done
+            python3 -c "import sys,json; [print(f['id']) for f in json.load(sys.stdin)]")
+          for FILE_ID in $FILE_IDS; do
+            retry curl -s -X DELETE -H "Authorization: Bearer $ZENODO_TOKEN" \
+              "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/files/$FILE_ID" > /dev/null
+          done
           
           # Update metadata
-          curl -s -X PUT \
+          echo "Updating metadata..."
+          retry curl -s -X PUT \
             -H "Authorization: Bearer $ZENODO_TOKEN" \
             -H "Content-Type: application/json" \
             -d '{
@@ -90,26 +118,34 @@ jobs:
                 "title": "Syntra Research Documentation",
                 "upload_type": "publication",
                 "publication_type": "report",
-                "description": "Research documentation - auto-uploaded draft. Do not publish without review.",
+                "description": "Research documentation on Quranic analysis, mathematical frameworks, and theological interpretation systems. Auto-uploaded draft. Do not publish without review.",
                 "creators": [{"name": "Syntra-Env", "affiliation": "Independent"}],
-                "keywords": ["Quran", "Arabic NLP", "Machine Learning", "Research"],
+                "keywords": ["Quran", "Arabic NLP", "Machine Learning", "Research", "Kalima"],
                 "license": "cc-by-4.0"
               }
             }' \
             "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID" | python3 -c "import sys,json; d=json.load(sys.stdin); print('Updated metadata:', d.get('title',''))"
           
-          # Upload files from root
-          echo "Uploading files..."
-          for file in *.html "Technical Design Document"/*.html; do
-            if [ -f "$file" ]; then
-              echo "  Uploading: $file"
-              curl -s -X POST \
-                -H "Authorization: Bearer $ZENODO_TOKEN" \
-                -F "file=@$file" \
-                "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/files" | \
-                python3 -c "import sys,json; d=json.load(sys.stdin); print('    ->', d.get('filename',''))"
-            fi
+          # Upload all HTML files from research/ directory
+          echo "Uploading HTML files from research/..."
+          find research -name "*.html" -type f | while read file; do
+            echo "  Uploading: $file"
+            retry curl -s -X POST \
+              -H "Authorization: Bearer $ZENODO_TOKEN" \
+              -F "file=@$file" \
+              "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/files" | \
+              python3 -c "import sys,json; d=json.load(sys.stdin); print('    ->', d.get('filename',''))"
           done
+          
+          # Upload CSS
+          if [ -f "styles.css" ]; then
+            echo "  Uploading: styles.css"
+            retry curl -s -X POST \
+              -H "Authorization: Bearer $ZENODO_TOKEN" \
+              -F "file=@styles.css" \
+              "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/files" | \
+              python3 -c "import sys,json; d=json.load(sys.stdin); print('    ->', d.get('filename',''))"
+          fi
           
           # Save deposit ID
           echo "$DEPOSIT_ID" > "${{ env.ZENODO_DEPOSIT_FILE }}"
