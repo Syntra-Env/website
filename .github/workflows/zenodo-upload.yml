@@ -12,6 +12,10 @@ on:
         description: 'Force create new version'
         required: false
         default: 'false'
+      use_sandbox:
+        description: 'Use sandbox.zenodo.org'
+        required: false
+        default: 'false'
 
 env:
   ZENODO_DEPOSIT_FILE: .zenodo_deposit_id
@@ -28,27 +32,40 @@ jobs:
       - name: Upload to Zenodo
         env:
           ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
-          ZENODO_SANDBOX: ${{ secrets.ZENODO_SANDBOX }}
         run: |
-          set -e
-          
-          retry() {
-            local n=1
-            local max=3
-            local delay=5
-            while [ $n -le $max ]; do
-              "$@" && return 0 || {
-                echo "Attempt $n/$max failed: $?"
-                [ $n -lt $max ] && sleep $delay
-                n=$((n+1))
-              }
+          # Retry function for API calls
+          retry_curl() {
+            local max_attempts=5
+            local delay=10
+            local attempt=1
+            local response
+            local status_code
+            
+            while [ $attempt -le $max_attempts ]; do
+              echo "Attempt $attempt/$max_attempts..."
+              response=$(curl -s -w "\n%{http_code}" "$@")
+              status_code=$(echo "$response" | tail -n1)
+              
+              if [ "$status_code" = "200" ] || [ "$status_code" = "201" ]; then
+                echo "$response" | sed '$d'
+                return 0
+              elif [ "$status_code" = "500" ] || [ "$status_code" = "502" ] || [ "$status_code" = "503" ]; then
+                echo "Got HTTP $status_code, retrying in ${delay}s..."
+                sleep $delay
+                attempt=$((attempt+1))
+                delay=$((delay*2))
+              else
+                echo "$response" | sed '$d'
+                return 1
+              fi
             done
-            echo "Command failed after $max attempts"
+            
+            echo "Failed after $max_attempts attempts"
             return 1
           }
           
           # Determine Zenodo URL
-          if [ "$ZENODO_SANDBOX" = "true" ]; then
+          if [ "${{ github.event.inputs.use_sandbox }}" = "true" ] || [ "${{ secrets.ZENODO_SANDBOX }}" = "true" ]; then
             ZENODO_URL="https://sandbox.zenodo.org"
           else
             ZENODO_URL="https://zenodo.org"
@@ -73,21 +90,23 @@ jobs:
             DEPOSIT_ID=$(cat "${{ env.ZENODO_DEPOSIT_FILE }}")
             echo "Using existing deposit: $DEPOSIT_ID"
             
-            STATUS_RESPONSE=$(check_deposit "$DEPOSIT_ID")
+            STATUS_RESPONSE=$(retry_curl "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID" | head -n-1)
             echo "Status Response: $STATUS_RESPONSE"
             STATUS=$(echo "$STATUS_RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('state','unsubmitted'))")
             
             if [ "$STATUS" = "done" ]; then
               echo "Deposit is published, creating new version..."
-              retry curl -s -X POST -H "Authorization: Bearer $ZENODO_TOKEN" \
+              retry_curl -X POST -H "Authorization: Bearer $ZENODO_TOKEN" \
                 "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/actions/newversion" > /dev/null
+              sleep 3
               NEW_VERSION=$(check_deposit "$DEPOSIT_ID" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('links',{}).get('latest_draft','NO_LINK'))")
               DEPOSIT_ID=$(echo "$NEW_VERSION" | grep -o '[0-9]\+' | tail -1)
               echo "New version ID: $DEPOSIT_ID"
             fi
           else
             echo "Creating new deposit..."
-            NEW_DEP=$(retry create_deposit)
+            NEW_DEP=$(retry_curl -X POST -H "Authorization: Bearer $ZENODO_TOKEN" \
+              "$ZENODO_URL/api/deposit/depositions")
             echo "API Response: $NEW_DEP"
             DEPOSIT_ID=$(echo "$NEW_DEP" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('id', d.get('error', 'NO_ID')))")
             if [ "$DEPOSIT_ID" = "NO_ID" ]; then
@@ -104,13 +123,13 @@ jobs:
             "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/files" | \
             python3 -c "import sys,json; [print(f['id']) for f in json.load(sys.stdin)]")
           for FILE_ID in $FILE_IDS; do
-            retry curl -s -X DELETE -H "Authorization: Bearer $ZENODO_TOKEN" \
+            retry_curl -X DELETE -H "Authorization: Bearer $ZENODO_TOKEN" \
               "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/files/$FILE_ID" > /dev/null
           done
           
           # Update metadata
           echo "Updating metadata..."
-          retry curl -s -X PUT \
+          retry_curl -X PUT \
             -H "Authorization: Bearer $ZENODO_TOKEN" \
             -H "Content-Type: application/json" \
             -d '{
@@ -130,7 +149,7 @@ jobs:
           echo "Uploading HTML files from research/..."
           find research -name "*.html" -type f | while read file; do
             echo "  Uploading: $file"
-            retry curl -s -X POST \
+            retry_curl -X POST \
               -H "Authorization: Bearer $ZENODO_TOKEN" \
               -F "file=@$file" \
               "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/files" | \
@@ -140,7 +159,7 @@ jobs:
           # Upload CSS
           if [ -f "styles.css" ]; then
             echo "  Uploading: styles.css"
-            retry curl -s -X POST \
+            retry_curl -X POST \
               -H "Authorization: Bearer $ZENODO_TOKEN" \
               -F "file=@styles.css" \
               "$ZENODO_URL/api/deposit/depositions/$DEPOSIT_ID/files" | \
