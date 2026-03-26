@@ -1,0 +1,35 @@
+name: CSS Conformance
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  validate-css:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check HTML files for correct CSS reference
+        run: |
+          echo "Checking for HTML files with incorrect CSS paths..."
+          
+          for file in $(git diff --name-only ${{ github.event.pull_request.base.sha }} HEAD -- '*.html'); do
+            if [ -f "$file" ]; then
+              # Check if file has a link tag but not the correct href="styles.css"
+              if grep -q '<link.*stylesheet' "$file"; then
+                if ! grep -q 'href="styles.css"' "$file"; then
+                  echo "ERROR: $file does not reference styles.css correctly"
+                  echo "Expected: <link rel=\"stylesheet\" href=\"styles.css\">"
+                  echo "---"
+                  grep -n 'stylesheet' "$file" || true
+                  echo "---"
+                  exit 1
+                fi
+              fi
+            fi
+          done
+          
+          echo "All HTML files reference styles.css correctly."
