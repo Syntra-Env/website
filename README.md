@@ -1,27 +1,24 @@
 # Syntra Research Documentation
 
-Research documents on mathematical frameworks, theological interpretation systems, and technical design patterns.
+Research documents on mathematical frameworks, theological interpretation systems, and technical design patterns. Organized as a cohesive narrative "book" with chapter-based structure.
 
-## Core Methodology
+## Chapters
 
-- [Organic Quranic Methodology](research/methodology.html)
+1. [Organic Quranic Methodology](methodology.html) — Core principles for interpreting the Quran
+2. [History of Quranic Computation](quran-computation-history.html) — From Flügel to modern NLP
+3. [Literature Review](literature-review.html) — Quranic Arabic NLP & ML landscape
+4. [Kalima Mathematical Framework](math-framework.html) — Root space, gauge fields, UOR
+5. [Limits of the Mathematics](math-limits.html) — What our frameworks can and cannot tell us
+6. [Database Investigation](database-investigation.html) — SQL vs Vector vs Graph tradeoffs
+7. [Architecture](architecture.html) — System design and components
+8. [Quran DSL](quran-dsl.html) — Domain-specific language specification
+9. [Open Questions](open-questions.html) — Unresolved research questions
+10. [Our Journey](our-journey.html) — How we got here
 
-## Research
+## References
 
-- [Kalima Mathematical Framework](research/math-framework.html)
-- [Limits of the Mathematics](research/math-limits.html)
-- [Literature Review: Quranic Arabic NLP & ML](research/literature-review.html)
-- [History of Quranic Computation](research/quran-computation-history.html)
-- [Open Questions](research/open-questions.html)
-- [Database Investigation](research/database-investigation.html)
+- [References](references.html) — Bibliography and resources
 
-## Technical
+## About This Documentation
 
-- [Architecture](research/architecture.html)
-- [Quran DSL](research/quran-dsl.html)
-- [Testing](research/testing.html)
-
-## Meta
-
-- [Resources](meta/resources.html)
-- [Changelog](meta/changelog.html)
+This documentation follows the Organic Quranic Methodology — defining Quranic terms using only the Quran itself, with consistency as the primary constraint.
