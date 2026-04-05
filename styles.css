@@ -111,6 +111,21 @@ caption {
 a { color: #2a5db0; }
 a:hover { color: #1a4a90; }
 
+.button {
+  display: inline-block;
+  padding: 0.6em 1.2em;
+  background: #2a5db0;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 13pt;
+  margin: 0.5em 0;
+}
+.button:hover {
+  background: #1a4a90;
+  color: white;
+}
+
 blockquote {
   margin: 1em 0;
   padding: 0.5em 1em;

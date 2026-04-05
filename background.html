@@ -27,57 +27,108 @@
 
 <p>For centuries, Quranic scholarship relied on manual methods of analysis:</p>
 
-<h4 id="s2-1-1">Classical Concordances</h4>
+<h4>Classical Concordances</h4>
 <p>Early scholars created concordances — alphabetical indexes of every word in the Quran. The first printed concordance was Lane's Arabic-English Lexicon (1863-1893), though it focused on pre-Islamic poetry more than the Quran itself.</p>
 
-<h4 id="s2-1-2">Fluegel's Concordance (1842)</h4>
+<h4>Fluegel's Concordance (1842)</h4>
 <p>Gustav Flügel produced the first systematic Quranic concordance, enabling scholars to find all occurrences of a word across the text. This was revolutionary — before Flügel, exhaustive word searches were impractical.</p>
 
-<h4 id="s2-1-3">Limitations of Manual Analysis</h4>
+<h4>Limitations of Manual Analysis</h4>
 <ul>
-<li>Time-intensive and prone to human error</li>
-<li>Unable to detect complex patterns across thousands of verses</li>
-<li>Limited to simple keyword searches</li>
+<li><strong>Time-intensive:</strong> Finding all instances of a word could take weeks</li>
+<li><strong>Error-prone:</strong> Manual transcription introduced mistakes</li>
+<li><strong>Limited scope:</strong> Could not easily find patterns across thousands of verses</li>
+<li><strong>Incomplete verification:</strong> Impossible to check every instance exhaustively</li>
 </ul>
 
 <hr>
 
 <h3 id="s2-2">2.2 Early Computational Approaches (1970s-2000s)</h3>
 
-<p>The first computer-based Quranic analysis emerged in the 1970s:</p>
+<p>The first computer-readable Quran text appeared in the 1970s, but systematic computational analysis began later.</p>
 
+<h4>Early Digital Texts</h4>
+<p>The King Fahd Glorious Quran Printing Complex began digitizing the Arabic text in the 1970s-1980s. This created the first machine-readable corpus, though access was restricted.</p>
+
+<h4>Academic Projects (1990s)</h4>
+<p>Universities began creating Quranic databases:</p>
 <ul>
-<li><strong>1970s:</strong> Early database systems storing Quranic text</li>
-<li><strong>1980s:</strong> Simple concordance programs</li>
-<li><strong>1990s:</strong> Morphological analyzers for Arabic begin appearing</li>
-<li><strong>2000s:</strong> CD-ROM based Quranic applications become common</li>
+<li><strong>University of Qatar</strong> — early database projects</li>
+<li><strong>University of Leeds</strong> — morphological analysis research</li>
+<li><strong>Islamic Computing Center (Riyadh)</strong> — standardization efforts</li>
+</ul>
+
+<h4>Challenges of the Era</h4>
+<ul>
+<li><strong>Encoding issues:</strong> Arabic text required multiple incompatible encodings (CP1256, ISO 8859-6, etc.)</li>
+<li><strong>No standardization:</strong> Different projects used different verse numbering</li>
+<li><strong>Limited sharing:</strong> Data rarely shared between projects</li>
 </ul>
 
 <hr>
 
 <h3 id="s2-3">2.3 The Digital Quran Corpus Era (2008-2015)</h3>
 
-<p>The launch of key projects marked a turning point:</p>
+<p>This period saw the emergence of open, well-annotated Quranic corpora.</p>
 
+<h4>Quranic Arabic Corpus (2009)</h4>
+<p>Developed by Kais Dukes at the University of Leeds, this became the foundational resource for modern computational Quranic linguistics:</p>
 <ul>
-<li><strong>Quranic Corpus (2008)</strong> — Annotated text with morphological data</li>
-<li><strong>Tanzil Project (2008)</strong> — Precise Quran text with multiple readings</li>
-<li><strong> Noor Studios Database (2010)</strong> — Comprehensive Quran database with advanced search</li>
+<li><strong>Morphological annotation</strong> for every word</li>
+<li><strong>Syntactic dependency relations</strong></li>
+<li><strong>Open source</strong> and freely available</li>
+<li><strong>Web interface</strong> for exploration</li>
 </ul>
 
-<p>Structured, annotated digital text became widely available, enabling new computational approaches.</p>
+<h4>Tanzil Project (2010)</h4>
+<p>The Tanzil project established the de facto standard for Quranic text:</p>
+<ul>
+<li><strong>Character-perfect Uthmani script</strong></li>
+<li><strong>Standard verse numbering</strong> (Hafs recitation)</li>
+<li><strong>Multiple translations</strong></li>
+<li><strong>API access</strong> for developers</li>
+</ul>
+
+<h4>Other Notable Projects</h4>
+<ul>
+<li><strong>Corpus Coranicum</strong> (Germany) — historical-critical analysis</li>
+<li><strong>Nobataq</strong> — phrase-level analysis</li>
+<li><strong>Shamela</strong> — hadith and tafsir database</li>
+</ul>
 
 <hr>
 
 <h3 id="s2-4">2.4 Modern NLP and Machine Learning (2015-Present)</h3>
 
-<p>Deep learning and transformer models have enabled more sophisticated analysis:</p>
-
+<h4>Arabic NLP Toolkits</h4>
+<p>General-purpose Arabic NLP tools began supporting Quranic Arabic:</p>
 <ul>
-<li><strong>AraBERT (2019)</strong> — Pre-trained BERT model for Arabic</li>
-<li><strong>CAMeL Lab tools</strong> — Morphological analyzers for Arabic</li>
-<li><strong>Various Arabic NLP libraries</strong></li>
-<li><strong>Transformer-based models</strong> for translation, summarization, Q&A</li>
+<li><strong>MADAMIRA</strong> — morphological analysis (2014)</li>
+<li><strong>CAMeL Tools</strong> — comprehensive Arabic NLP (2020)</li>
+<li><strong>AraBERT</strong> — pre-trained language models (2020)</li>
+</ul>
+
+<h4>Quran-Specific Models</h4>
+<ul>
+<li><strong>CAMeLBERT-CA</strong> — Classical Arabic variant</li>
+<li><strong>QuranGPT</strong> — embedding-based semantic search</li>
+<li><strong>Various fine-tuned models</strong> for specific tasks</li>
+</ul>
+
+<h4>Treebanks and Syntax</h4>
+<p>Recent efforts have focused on syntactic annotation:</p>
+<ul>
+<li><strong>MASAQ</strong> — Morphologically and Syntactically-Annotated Quran</li>
+<li><strong>Quranic Treebank</strong> — full parse trees</li>
+<li><strong>Dependency annotations</strong> in Universal Dependencies format</li>
+</ul>
+
+<h4>Question Answering and RAG</h4>
+<p>Modern approaches combine retrieval with generation:</p>
+<ul>
+<li><strong>Qur'an QA shared tasks</strong> — benchmarking comprehension</li>
+<li><strong>HAQA/QUQA</strong> — Quran and Hadith QA corpora</li>
+<li><strong>RAG architectures</strong> — retrieval-augmented generation</li>
 </ul>
 
 <hr>
@@ -87,12 +138,15 @@
 <table>
 <thead><tr><th>Year</th><th>Milestone</th></tr></thead>
 <tbody>
-  <tr><td>1842</td><td>Flügel's Concordance</td></tr>
-  <tr><td>1863</td><td>Lane's Arabic-English Lexicon</td></tr>
-  <tr><td>1970s</td><td>First computer-based Quranic analysis</td></tr>
-  <tr><td>2008</td><td>Quranic Corpus launched</td></tr>
-  <tr><td>2015</td><td>Deep learning applied to Arabic NLP</td></tr>
-  <tr><td>2019</td><td>AraBERT released</td></tr>
+  <tr><td>1842</td><td>Flügel's concordance — first systematic word index</td></tr>
+  <tr><td>1970s</td><td>First machine-readable Quran texts</td></tr>
+  <tr><td>2009</td><td>Quranic Arabic Corpus launched</td></tr>
+  <tr><td>2010</td><td>Tanzil establishes standard text</td></tr>
+  <tr><td>2014</td><td>MADAMIRA morphological analyzer</td></tr>
+  <tr><td>2020</td><td>CAMeL Tools, AraBERT</td></tr>
+  <tr><td>2022</td><td>Qur'an QA shared task</td></tr>
+  <tr><td>2024</td><td>ALLaM, large Arabic LLMs</td></tr>
+  <tr><td>2025</td><td>Noor treebank, QuranMorph</td></tr>
 </tbody>
 </table>
 
@@ -100,12 +154,33 @@
 
 <h3 id="s2-6">2.6 Open Challenges</h3>
 
+<h4>Classical vs Modern Arabic</h4>
+<p>Most NLP tools are trained on Modern Standard Arabic (MSA). Quranic Arabic (CQA) differs significantly in vocabulary, morphology, and syntax. Transfer learning from MSA to CQA remains an open problem.</p>
+
+<h4>Semantic vs Morphological Analysis</h4>
+<p>Current tools excel at morphology but struggle with semantics. The Quran's meaning often depends on context, metaphor, and intertextual reference that pure morphological analysis cannot capture.</p>
+
+<h4>Tafsir Computation</h4>
+<p>The vast body of classical commentary (tafsir) remains largely unprocessed computationally. Cross-tafsir comparison and entailment detection are underdeveloped.</p>
+
+<h4>Provenance and Interpretation</h4>
+<p>Connecting interpretations to their evidence, tracking the lineage of claims, and enabling falsification-based verification remains a frontier.</p>
+
+<h4>Where We Are Now</h4>
+<p>The field has progressed from manual concordances to sophisticated neural models, but significant challenges remain:</p>
 <ul>
-<li><strong>Data availability:</strong> Limited high-quality annotated datasets for classical Arabic</li>
-<li><strong>Morphological complexity:</strong> Arabic requires specialized tools due to rich morphology</li>
-<li><strong>Semantic understanding:</strong> Surface-level analysis dominates</li>
-<li><strong>Integration:</strong> Connecting computational methods with traditional scholarship</li>
-<li><strong>Formal ontological models:</strong> Lack of structured models for Quranic concepts</li>
+<li><strong>Morphology is largely solved</strong> — reliable segmentation and tagging</li>
+<li><strong>Syntax is improving</strong> — treebanks and dependency parsing maturing</li>
+<li><strong>Semantics is the frontier</strong> — meaning, interpretation, falsification</li>
+<li><strong>Provenance is nascent</strong> — tracking evidence and validating claims</li>
+</ul>
+
+<p>The next phase of Quranic computation likely involves:</p>
+<ul>
+<li><strong>Symbolic-semantic hybrids</strong> combining neural and knowledge-based approaches</li>
+<li><strong>Formal ontological models</strong> for Quranic concepts</li>
+<li><strong>Verification frameworks</strong> for interpretive claims</li>
+<li><strong>Intertextual analysis</strong> across the entire corpus</li>
 </ul>
 
 <hr>
@@ -125,14 +200,14 @@
 
 <h3 id="s3-2">3.2 Key Approaches in Quranic NLP</h3>
 
-<h4 id="s3-2-1">Statistical Methods</h4>
+<h4>Statistical Methods</h4>
 <p>Word frequency analysis, collocation detection, statistical machine translation. Popular tools include:</p>
 <ul>
 <li><strong>Khoja Stemmer</strong> (1999) — Rule-based Arabic stemmer</li>
-<li>< Tashaphyne</strong> (2012) — Arabic light stemmer and root extractor</li>
+<li><strong>Tashaphyne</strong> (2012) — Arabic light stemmer and root extractor</li>
 </ul>
 
-<h4 id="s3-2-2">Rule-Based Systems</h4>
+<h4>Rule-Based Systems</h4>
 <p>Morphological analyzers, parsers, and rule-based machine translation:</p>
 <ul>
 <li><strong>CAMeL Lab Morphological Analyzer</strong> (2015)</li>
@@ -140,15 +215,16 @@
 <li><strong>Madamira</strong> (2014) — NLP tool for Arabic</li>
 </ul>
 
-<h4 id="s3-2-3">Neural Approaches</h4>
+<h4>Neural Approaches</h4>
 <p>Deep learning and transformer models:</p>
 <ul>
 <li><strong>AraBERT</strong> (2019) — Pre-trained language models</li>
 <li><strong>AraGPT</strong> — Arabic GPT models</li>
+<li><strong>AceGPT</strong> (2024) — Arabic-localized LLM with cultural alignment</li>
 <li><strong>Various fine-tuned models</strong> for specific tasks</li>
 </ul>
 
-<h4 id="s3-2-4">Hybrid Systems</h4>
+<h4>Hybrid Systems</h4>
 <p>Combining rule-based and statistical approaches for better results.</p>
 
 <hr>
@@ -175,8 +251,6 @@
 <li><strong>Arabic Text Corpus</strong> — Large-scale text data</li>
 <li><strong>Hadith databases</strong> — Additional religious texts</li>
 </ul>
-
-<hr>
 
 <h3 id="s3-5">3.5 Related Work</h3>
 

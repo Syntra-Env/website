@@ -18,6 +18,8 @@
   <li><a href="#s2">Data Structure</a></li>
   <li><a href="#s3">Storage & Distribution</a></li>
   <li><a href="#s4">Access</a></li>
+  <li><a href="#s5">Research Content</a></li>
+  <li><a href="#s6">Open Questions</a></li>
 </ol>
 </nav>
 
@@ -72,8 +74,73 @@ conn = get_connection()</code></pre>
 <pre><code>from huggingface_hub import hf_hub_download
 db_path = hf_hub_download(repo_id="Syntra-Env/kalima-db", filename="kalima.db", repo_type="dataset")</code></pre>
 
+<hr>
+
+<h2 id="s5">Research Content</h2>
+
+<p>The database contains research notes, hypotheses, and findings in the <code>holonomic_entries</code> table. This is the raw material for the research:</p>
+
+<table>
+<thead><tr><th>Phase</th><th>Description</th><th>Count</th></tr></thead>
+<tbody>
+  <tr><td>question</td><td>Open research questions</td><td>232</td></tr>
+  <tr><td>hypothesis</td><td>Proposed answers to questions</td><td>469</td></tr>
+  <tr><td>validation</td><td>Being actively verified against Quran</td><td>139</td></tr>
+  <tr><td>verified</td><td>Passed verification tests</td><td>4</td></tr>
+  <tr><td>rejected</td><td>Failed verification, rejected</td><td>4</td></tr>
+</tbody>
+</table>
+
+<p><strong>Categories:</strong> anthropology, cosmology, design, essay, general, historical, interpretation, lexical, linguistic, meta_research, methodology, ncu, personal, quranic_research, session, uncategorized</p>
+
+<p>The content is searchable via the MCP tools. Each entry has an address, content, phase, category, confidence score, and verification status.</p>
+
+<hr>
+
+<h2 id="s6">Open Questions</h2>
+
+<p>The database contains 232 open research questions, 469 hypotheses, and 139 entries in active verification. These drive the ongoing research:</p>
+
+<h3 id="s6-1">NCU Framework</h3>
+<ul>
+  <li>How can characters exist in separate NCUs yet have coherent narratives?</li>
+  <li>Are NCUs "meeting places" in afterlife dimensions?</li>
+  <li>What is the relationship between individual nafs and collective groups in the afterlife?</li>
+</ul>
+
+<h3 id="s6-2">Mathematical Structure</h3>
+<ul>
+  <li>Can Quranic text be represented as a Calabi-Yau manifold?</li>
+  <li>Do semantic shifts correspond to mathematical phase transitions?</li>
+  <li>What is the connection between topological features and semantic content?</li>
+</ul>
+
+<h3 id="s6-3">Linguistic Analysis</h3>
+<ul>
+  <li>Do long vs short alif distinctions reliably indicate this-life vs afterlife orientation?</li>
+  <li>What is the optimal schema for storing root vector profiles?</li>
+  <li>How to ensure content_addresses are unique and efficiently queriable?</li>
+</ul>
+
+<h3 id="s6-4">Methodology</h3>
+<ul>
+  <li>What specific criteria distinguish "validated" from "actively verifying" status?</li>
+  <li>How many contradictory instances invalidate a hypothesis?</li>
+  <li>How should we weight distant references vs. proximate context?</li>
+</ul>
+
+<h3 id="s6-5">Database Engineering</h3>
+<ul>
+  <li>What indexes are needed for common query patterns?</li>
+  <li>Should we precompute common aggregations?</li>
+  <li>How to optimize for both text search and structural queries?</li>
+  <li>Should we add more tafsir sources beyond Sahih International?</li>
+</ul>
+
+<p><em>These questions evolve as research progresses. New questions are added, some move to hypothesis, and verified findings are locked in.</em></p>
+
 <nav class="chapter-nav">
-  <a href="math-framework.html">← Chapter 4: kalima-math</a>
+  <a href="architecture.html">← Chapter 4: Architecture</a>
   <span></span>
   <a href="mcp.html">Chapter 6: kalima-mcp →</a>
 </nav>
