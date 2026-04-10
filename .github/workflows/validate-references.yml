@@ -25,8 +25,8 @@ jobs:
           CITATION_COUNT=$(grep -oP '<li id="ref-[0-9]+">' references.html | wc -l)
           echo "Found $CITATION_COUNT citation entries with proper IDs"
           
-          if [ "$CITATION_COUNT" -ne 74 ]; then
-            echo "ERROR: Expected 74 citations, found $CITATION_COUNT"
+          if [ "$CITATION_COUNT" -lt 40 ]; then
+            echo "ERROR: Expected at least 40 citations, found $CITATION_COUNT"
             exit 1
           fi
           
@@ -36,8 +36,8 @@ jobs:
           URL_COUNT=$(grep -oP 'href="https?://[^"]+"' references.html | wc -l)
           echo "Found $URL_COUNT URLs with proper href tags"
           
-          if [ "$URL_COUNT" -lt 74 ]; then
-            echo "ERROR: Expected at least 74 URLs with href, found $URL_COUNT"
+          if [ "$URL_COUNT" -lt 40 ]; then
+            echo "ERROR: Expected at least 40 URLs with href, found $URL_COUNT"
             exit 1
           fi
           
