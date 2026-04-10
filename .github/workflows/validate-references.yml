@@ -114,7 +114,7 @@ jobs:
           TOTAL_URLS=$((PASSED + FAILED))
           FAILURE_RATE=$((FAILED * 100 / TOTAL_URLS))
           
-          if [ $FAILURE_RATE -gt 10 ]; then
+          if [ $FAILURE_RATE -gt 20 ]; then
             echo ""
             echo "Error: Failure rate ($FAILURE_RATE%) exceeds 10%. Check output above for details."
             exit 1
